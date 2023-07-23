@@ -42,7 +42,7 @@
         <div class="modal fade" id="modal-hapus" tabindex="-1" role="dialog" aria-labelledby="modal-hapusLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <?= form_open('admin/ManageUser/soft_delete', ['class' => 'd-inline', 'id' => 'formHapusUser']); ?>
+                    <?= form_open('admin/ManageUser/hard_delete', ['class' => 'd-inline', 'id' => 'formHapusUser']); ?>
                     <div class="modal-header">
                         <h5 class="modal-title" id="modal-hapusLabel">Yakin ingin menghapus data?</h5>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">

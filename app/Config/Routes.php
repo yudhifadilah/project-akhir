@@ -46,14 +46,24 @@ $routes->group('admin', ['filter' => 'role:1'], function ($routes) {
 
 	$routes->get('manage-user/(:any)', 'Admin\ManageUser::detail/$1');
 	$routes->put('manage-user/user_activation', 'Admin\ManageUser::user_activation');
-	$routes->delete('manage-user/soft_delete', 'Admin\ManageUser::soft_delete');
+	$routes->delete('manage-user/hard_delete', 'Admin\ManageUser::hard_delete');
 
 	$routes->get('articles', 'Admin\ArticleController::index');
     $routes->get('articles/create', 'Admin\ArticleController::create');
     $routes->post('articles/store', 'Admin\ArticleController::store');
     $routes->get('articles/edit/(:num)', 'Admin\ArticleController::edit/$1');
     $routes->post('articles/update/(:num)', 'Admin\ArticleController::update/$1');
-	$routes->get('articles/delete/(:num)', 'Admin\ArticleController::delete/$1', ['as' => 'delete_article']);
+	$routes->get('articles/soft_delete/(:num)', 'Admin\ArticleController::soft_delete/$1');
+
+	// app/config/Routes.php
+	$routes->get('organization', 'Admin\OrganizationController::index');
+	$routes->get('organization/create', 'Admin\OrganizationController::create');
+	$routes->post('organization/store', 'Admin\OrganizationController::store');
+	$routes->get('organization/edit/(:num)', 'Admin\OrganizationController::edit/$1');
+	$routes->post('organization/update/(:num)', 'Admin\OrganizationController::update/$1');
+	$routes->delete('organization/hard_delete', 'Admin\OrganizationController::hard_delete');
+
+
 
 });
 
@@ -82,6 +92,10 @@ $routes->get('user/ubah-password', 'User::ubah_password');
 
 $routes->get('articles', 'showPost\showPost::index');
 $routes->get('articles/(:num)', 'showPost\showPost::show/$1');
+
+// app/config/Routes.php
+
+
 
 /*
  * --------------------------------------------------------------------

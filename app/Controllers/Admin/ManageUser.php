@@ -87,17 +87,19 @@ class ManageUser extends BaseController
         return redirect()->to('/admin/manage-user');
     }
 
-    public function soft_delete()
+    public function hard_delete()
     {
-        // jika id yang dihapus dari user_level admin, gagalkan!
-        $this->ManageUser->save([
-            'id' => $this->request->getPost('id'),
-            'deleted_at' => date('Y-m-d H:i:s'),
-            'row_status' => 0
-        ]);
+        $id = $this->request->getPost('id');
+        $user_level = $this->ManageUser->getUserLevel($id);
 
-        echo json_encode(['msg' => 'Data berhasil dihapus.']);
+        if ($user_level == 1) {
+            echo json_encode(['msg' => 'Tidak dapat menghapus admin.']);
+        } else {
+            $this->ManageUser->delete($id);
+            echo json_encode(['msg' => 'Data berhasil dihapus.']);
+        }
     }
+    
 
     public function user_unverified()
     {
@@ -142,4 +144,5 @@ class ManageUser extends BaseController
             }
         }
     }
+    
 }

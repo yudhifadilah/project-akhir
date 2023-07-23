@@ -15,17 +15,17 @@
                 <!-- Page Heading -->
                 <h1 class="h3 mb-4 text-gray-900">Edit <?= $title; ?></h1>
 
-                <!-- Form Edit Artikel -->
+                <!-- Form Edit Organisasi -->
                 <div class="card shadow">
                     <div class="card-body">
-                        <form method="post" action="/admin/articles/update/<?php echo $article['id']; ?>" enctype="multipart/form-data">
+                        <form method="post" action="/admin/organization/update/<?php echo $organization['id']; ?>" enctype="multipart/form-data">
                             <div class="form-group">
-                                <label for="title">Judul Artikel</label>
-                                <input type="text" name="title" value="<?php echo $article['title']; ?>" class="form-control" required>
+                                <label for="name">Nama Lengkap</label>
+                                <input type="text" name="name" value="<?php echo $organization['name']; ?>" class="form-control" required>
                             </div>
                             <div class="form-group">
-                                <label for="content">Isi Artikel</label>
-                                <textarea name="content" id="content" class="form-control" rows="8" required><?php echo $article['content']; ?></textarea>
+                                <label for="jabatan">Jabatan</label>
+                                <textarea name="jabatan" id="jabatan" class="form-control" rows="8" required><?php echo $organization['jabatan']; ?></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="image">Gambar Artikel</label>

@@ -25,6 +25,13 @@ class ManageUserModel extends Model
         $this->uv = $this->db->table($this->table)->select('id, username, user_image, nama, is_active, user_level, user_ktp')->where(['row_status' => 1, 'is_active' => 0]);
     }
 
+    public function getUserLevel($userLevel)
+    {
+        // Add a condition to get users based on their user_level
+        $this->orderBy('nama', 'ASC');
+        return $this->where(['row_status' => 1, 'user_level' => $userLevel])->get()->getResultArray();
+    }
+
     public function getUser($username = false)
     {
         $this->orderBy('user_level', 'ASC');
@@ -115,4 +122,5 @@ class ManageUserModel extends Model
         $tbl_storage = $this->db->table($this->table);
         return $tbl_storage->countAllResults();
     }
+
 }

@@ -6,46 +6,61 @@
     <div class="container-fluid">
 
         <?php if (session()->getFlashdata('msg')) : ?>
+            <!-- Move this hidden input inside a form if you're planning to use it for deletion -->
             <input type="hidden" name="flash-msg" id="flash-msg" data-flash="<?= session()->getFlashdata('msg'); ?>">
         <?php endif; ?>
 
         <div class="row">
             <div class="col-12">
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <h1 class="h3 mb-4 text-gray-900"><?= $title; ?></h1>
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-main" id="tbl-articles">
+                                    <!-- Table headers and data loop to display the list of organizational structures -->
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama</th>
+                                            <th>Jabatan</th>
+                                            <th>Foto</th>
+                                            <th>Tanggal</th>
+                                            <th data-orderable="false">#</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($organizations as $organization) : ?>
+                                            <tr>
+                                                <td><?= $organization['id']; ?></td>
+                                                <td><?= $organization['name']; ?></td>
+                                                <td><?= $organization['jabatan']; ?></td>
+                                                <td>
+                                                    <?php if (!empty($organization['image_filename'])) : ?>
+                                                        <img src="/assets/img/postingan/<?= $organization['image_filename']; ?>" alt="Gambar Artikel" width="100">
+                                                    <?php else : ?>
+                                                        No Image
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td><?= $organization['created_at']; ?></td>
+                                                <td>
+                                                    <a href="<?= base_url('/admin/organization/edit/' . $organization['id']); ?>" class="btn btn-sm btn-primary">Edit</a>
+                                                    <a href="<?= base_url('/admin/organization/hard_delete/' . $organization['id']); ?>" class="btn btn-sm btn-danger hapus-article" data-toggle="modal" data-target="#modal-hapus" data-organizationid="<?= $organization['id']; ?>">Hapus</a>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
 
-                <!-- Page Heading -->
-                <h1 class="h3 mb-4 text-gray-900"><?= $title; ?></h1>
-
-                <div class="card shadow">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-main" id="tbl-articles">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Judul</th>
-                                        <th>Isi</th>
-                                        <th>Gambar</th>
-                                        <th>Tanggal</th>
-                                        <th data-orderable="false">#</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- Modal Hapus Artikel -->
-        <div class="modal fade" id="modal-hapus" tabindex="-1" role="dialog" aria-labelledby="modal-hapusLabel" aria-hidden="true">
+                             <!-- Modal Hapus Artikel -->
+                             <div class="modal fade" id="modal-hapus" tabindex="-1" role="dialog" aria-labelledby="modal-hapusLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <form action="<?= base_url('/admin/ArticleController/hard_delete') ?>" method="post" id="formHapusArtikel">
+                    <form action="<?= base_url('/admin/OrganizationController/hard_delete') ?>" method="post" id="formHapusArtikel">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modal-hapusLabel">Yakin ingin menghapus artikel ini?</h5>
+                            <h5 class="modal-title" id="modal-hapusLabel">Yakin ingin menghapus Struktur ini?</h5>
                             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
@@ -54,7 +69,7 @@
                             <span class="text-gray-900">Klik "Yakin" untuk konfirmasi menghapus artikel ini.</span>
                             <?= csrf_field(); ?>
                             <input type="hidden" name="_method" value="DELETE">
-                            <input type="hidden" name="id" id="artikel_id">
+                            <input type="hidden" name="id" id="organisasi_id">
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
@@ -64,9 +79,13 @@
                 </div>
             </div>
         </div>
-
+                        </div>
+                    </div>
+                </div>
+                <!-- /. container-fluid -->
+            </div>
+        </div>
     </div>
-    <!-- /. container-fluid -->
 </section>
 <?= $this->endSection(); ?>
 
@@ -75,8 +94,8 @@
     $(document).ready(function () {
         var table;
 
-        function tbl_articles() {
-            table = $("#tbl-articles").DataTable({
+        function tbl_organizations() {
+            table = $("#tbl-organizations").DataTable({
                 "lengthMenu": [
                     [5, 10, 25, 50, -1],
                     [5, 10, 25, 50, "All"]
@@ -85,7 +104,7 @@
                 "serverSide": true,
                 "order": [],
                 "ajax": {
-                    "url": '<?= base_url('/admin/ArticleController/dt_articles') ?>',
+                    "url": '<?= base_url('/admin/OrganizationController/dt_organizations') ?>',
                     "type": "post",
                     "dataSrc": function (data) {
                         // Map the data to the required format for DataTables
@@ -94,8 +113,8 @@
                 },
                 "columns": [
                     {"data": "id"},
-                    {"data": "title"},
-                    {"data": "content"},
+                    {"data": "name"},
+                    {"data": "jabatan"},
                     {
                         "data": "image_filename",
                         "render": function (data, type, row, meta) {
@@ -110,8 +129,8 @@
                     {
                         "data": "id",
                         "render": function (data, type, row, meta) {
-                            return '<a href="/admin/articles/edit/' + data + '" class="btn btn-sm btn-primary">Edit</a>' +
-                                '<button type="button" data-toggle="modal" data-target="#modal-hapus" data-articleid="' + data + '" class="btn btn-sm btn-danger hapus-article">Hapus</button>';
+                            return '<a href="/admin/organization/edit/' + data + '" class="btn btn-sm btn-primary">Edit</a>' +
+                                '<button type="button" data-toggle="modal" data-target="#modal-hapus" data-organizationid="' + data + '" class="btn btn-sm btn-danger hapus-article">Hapus</button>';
                         }
                     }
                 ],
@@ -137,7 +156,7 @@
             });
         }
 
-        tbl_articles();
+        tbl_organizations();
 
         // Pesan berhasil di verifikasi (approved)
         var msg = $("#flash-msg").data('flash');
@@ -151,22 +170,22 @@
 
         // Menampilkan modal delete
         $('#tbl-articles').off('click', '.hapus-article').on('click', '.hapus-article', function () {
-            var articleId = $(this).data('articleid');
-            $(".modal-body #artikel_id").val(articleId);
+            var organizationid = $(this).data('organizationid');
+            $(".modal-body #organisasi_id").val(organizationid);
         });
 
         // Submit form delete menggunakan AJAX
         $('#formHapusArtikel').submit(function (e) {
             e.preventDefault();
 
-            var articleId = $("#artikel_id").val();
+            var organizationid = $("#organisasi_id").val();
 
             $.ajax({
-                url: $(this).attr('action') + '/' + articleId,
+                url: $(this).attr('action') + '/' + organizationid,
                 method: 'post',
                 dataType: 'json',
                 data: {
-                    id: articleId,
+                    id: organizationid,
                     _method: 'DELETE',
                     "<?= csrf_token() ?>": "<?= csrf_hash() ?>"
                 },
@@ -182,7 +201,7 @@
 
                     if (res.success) {
                         $("#modal-hapus").modal('toggle');
-                        table.ajax.reload(null, false); // Refresh the data table after successful deletion
+                        table.ajax.reload(null, true); // Refresh the data table after successful deletion
                         $('.btn-yakin').html('Yakin'); // Reset the button text
                     } else {
                         console.log(res.msg); // Log any error messages
@@ -194,7 +213,7 @@
                     $('.btn-yakin').html('Yakin'); // Reset the button text
                 },
                 complete: function () {
-                    window.location.reload(); // Refresh the page after the deletion process is complete
+                     window.location.reload(); // Remove this line, as reloading the page is not necessary here
                 }
             });
         });

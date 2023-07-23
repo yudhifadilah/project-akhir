@@ -68,6 +68,9 @@
                 </div>
             </div>
         </li>
+
+                <!-- Artikel atau Berita -->
+
         <li class="nav-item <?= url_is('/admin/ArticleController') || url_is('/admin/ArticleController/create') || url_is('/admin/ArticleController/edit') ? 'active' : '' ?>">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#articles" aria-expanded="true" aria-controls="articles">
                 <?php if (url_is('/admin/ArticleController/create')) : ?>
@@ -88,8 +91,30 @@
                 </div>
             </div>
         </li>
-    <?php endif; ?>
 
+        <!-- Struktur Organisasi -->
+
+        <li class="nav-item <?= url_is('/admin/OrganizationController') || url_is('/admin/OrganizationController/create') || url_is('/admin/OrganizationController/edit') ? 'active' : '' ?>">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#organization" aria-expanded="true" aria-controls="articles">
+                <?php if (url_is('/admin/OrganizationController/create')) : ?>
+                    <i class="fas fa-envelope-open"></i>
+                <?php elseif (url_is('/admin/OrganizationController/edit')) : ?>
+                    <i class="fas fa-spinner"></i>
+                <?php elseif (url_is('/admin/OrganizationController/create')) : ?>
+                    <i class="fas fa-check-square"></i>
+                <?php else : ?>
+                    <i class="fas fa-list"></i>
+                <?php endif; ?>
+        <span>Struktur Organisasi</span>
+            </a>
+            <div id="organization" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="/admin/organization">Semua Struktur Organisasi</a>
+                    <a class="collapse-item" href="/admin/organization/create">Buat Struktur Organisasi</a>
+                </div>
+            </div>
+        </li>
+    <?php endif; ?>
     
         <!-- Pengajuan Surat -->
 
