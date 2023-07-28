@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Sistem Layanan Informasi Desa</title>
+    <title>Sistem Layanan Informasi Rukun Warga Cilame</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -41,7 +41,7 @@
     <section id="topbar" class="d-flex align-items-center">
         <div class="container d-flex justify-content-center justify-content-md-between">
             <div class="contact-info d-flex align-items-center">
-                <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:desaciwaruga@gmail.com">desaciwaruga@gmail.com</a></i>
+                <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:rukunwargacilame@gmail.com">rukunwargacilame@gmail.com</a></i>
                 <i class="bi bi-phone d-flex align-items-center ms-4"><span>+62896-9271-3590</span></i>
             </div>
            <!-- =======  <div class="social-links d-none d-md-flex align-items-center">
@@ -76,8 +76,8 @@
     <!-- ======= Hero Section ======= -->
     <section id="hero" class="d-flex align-items-center">
         <div class="container" data-aos="zoom-out" data-aos-delay="100">
-            <h1>Selamat Datang Di <span>Aplikasi Sistem Pelayanan Desa</span></h1>
-            <h2>Desa Ciwaruga</h2>
+            <h1>Selamat Datang Di <span>Aplikasi Sistem Pelayanan Rukun Warga Cilmae</span></h1>
+            <h2>Rukun Warga Cilame</h2>
             <div class="d-flex">
                 <a href="<?php echo base_url('Auth') ?>" class="btn-get-started scrollto">Login</a>
             </div>
@@ -88,27 +88,63 @@
 
 
 
-<section id="portfolio" class="portfolio">
+    <section id="portfolio" class="portfolio">
     <div class="container" data-aos="fade-up">
 
         <div class="section-title">
             <h2>Tentang Kami</h2>
-            <h3>Visi <span>Misi</span></h3>
-            <p>Memberdayakan peran aktif warga dalam mengambil prakarsa dan langkah-langkah nyata dalam pemecahan masalah di lingkungan RW</p>
+            <h3>Struktur <span>Organisasi</span></h3>
+            <p>Struktur utama yang ada dalam tingkatan pemerintahan RW (Rukun Warga)</p>
         </div>
         <div class="row mb-4">
-            <div class="col-md">
-                <div class="card">
-                  <!--  <a href="/showPost" target="_blank">  -->
-                  <!-- <img src="<?php echo base_url() ?>/assets/img/portfolio/portofolio-1.jpg" width="200px" height="200px" class="card-img-top" alt="card">
-                    </a>-->
-                </div>
+            <div class="col-md d-flex justify-content-center">
+                <!-- Menambahkan gaya CSS untuk menghilangkan garis pada tombol -->
+                <a href="/ShowStruktur" target="_blank" class="btn btn-primary" style="text-decoration: none;">
+                    Lihat Selengkapnya
+                </a>
             </div>
             <!-- Tambahkan elemen <a> dengan atribut "href" ke gambar selanjutnya -->
         </div>
     </div>
 </section>
 
+    <!-- ======= Struktur Section ======= -->
+    <section id="team" class="team section-bg">
+        <div class="container" data-aos="fade-up">
+            <div class="section-title">
+                <h2>Keuangan Rukun Warga Cilame</h2>
+                <h3>Transparansi <span>Keuangan</span></h3>
+            </div>
+
+            <!-- Assuming you have a container to wrap the grid -->
+            <div class="container">
+
+    <!-- Tambahkan tombol toggle untuk menyembunyikan/menampilkan tabel -->
+    <button id="toggleTableBtn" class="btn btn-primary mb-3">Kas RW</button>
+
+    <table id="keuanganTable" class="table table-hover table-blue">
+      <thead>
+        <tr>
+          <th scope="col">Tanggal</th>
+          <th scope="col">Deskripsi</th>
+          <th scope="col">Jumlah</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($keuangan_rw as $keuangan) : ?>
+          <tr>
+            <td><?= $keuangan['tanggal']; ?></td>
+            <td><?= $keuangan['deskripsi']; ?></td>
+            <td><?= $keuangan['jumlah']; ?></td>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+        </div>
+    </section>
+
+    
 
         <!-- End Portfolio Section -->
 
@@ -124,7 +160,6 @@
 <!-- Assuming you have a container to wrap the grid -->
 <div class="container">
     <div class="row">
-
         <?php foreach ($articles as $article) : ?>
             <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
                 <div class="member">
@@ -147,7 +182,6 @@
                 </div>
             </div>
         <?php endforeach; ?>
-
     </div>
 </div>
 
@@ -272,6 +306,15 @@
 
     <!-- Template Main JS File -->
     <script src="<?php echo base_url() ?>/assets/js/main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    // Toggle tabel ketika tombol di klik
+    $("#toggleTableBtn").on("click", function () {
+      $("#keuanganTable").toggle();
+    });
+  });
+</script>
 
 </body>
 

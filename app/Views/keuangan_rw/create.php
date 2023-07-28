@@ -19,19 +19,19 @@
                 <!-- Form Postingan Organisasi -->
                 <div class="card shadow">
                     <div class="card-body">
-                        <form action="/admin/organization/store" method="post" enctype="multipart/form-data">
+                        <form action="/KeuanganRWController/store" method="post" enctype="multipart/form-data">
                             <?= csrf_field() ?>
                             <div class="form-group">
-                                <label for="name">Nama Lengkap</label>
-                                <input type="text" name="name" id="name" class="form-control" required>
+                                <label for="tanggal">Tanggal</label>
+                                <input type="date" name="tanggal" id="tanggal" class="form-control" required>
                             </div>
                             <div class="form-group">
-                                <label for="jabatan">Jabatan</label>
-                                <input name="jabatan" id="jabatan" class="form-control" rows="8" required>
+                                <label for="deskripsi">Deskripsi</label>
+                                <input name="deskripsi" id="deskripsi" class="form-control" rows="8" required>
                             </div>
                             <div class="form-group">
-                                <label for="image">Foto</label>
-                                <input type="file" name="image" id="image" class="form-control-file">
+                                <label for="jumlah">Jumlah</label>
+                                <input type="number" name="jumlah" id="jumlah" class="form-control-file">
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary">Simpan</button>

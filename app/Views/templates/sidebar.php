@@ -114,12 +114,35 @@
                 </div>
             </div>
         </li>
+
+            <!-- Post Kas RW -->
+
+            <li class="nav-item <?= url_is('/KeuanganRWController') || url_is('/KeuanganRWController/create') || url_is('/KeuanganRWController/edit') ? 'active' : '' ?>">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#keuangan" aria-expanded="true" aria-controls="articles">
+                <?php if (url_is('/KeuanganRWController/create')) : ?>
+                    <i class="fas fa-envelope-open"></i>
+                <?php elseif (url_is('/KeuanganRWController/edit')) : ?>
+                    <i class="fas fa-spinner"></i>
+                <?php elseif (url_is('/KeuanganRWController/create')) : ?>
+                    <i class="fas fa-check-square"></i>
+                <?php else : ?>
+                    <i class="fas fa-list"></i>
+                <?php endif; ?>
+        <span>Kas RW</span>
+            </a>
+            <div id="keuangan" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="/KeuanganRWController">Rekapitulasi Kas RW</a>
+                    <a class="collapse-item" href="/KeuanganRWController/create">Input Kas RW</a>
+                </div>
+            </div>
+        </li>
     <?php endif; ?>
     
         <!-- Pengajuan Surat -->
 
     
-    <?php if (session()->get('user_level') == 3) : ?>
+  <!--   <?php if (session()->get('user_level') == 3) : ?>
         <li class="nav-item <?= url_is('/pengajuan') || url_is('/pengajuan/tambah') ? 'active' : '' ?>">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapsTwo">
                 <?php if (url_is('/pengajuan/tambah')) : ?>
@@ -136,7 +159,7 @@
                 </div>
             </div>
         </li>
-    <?php endif; ?>
+    <?php endif; ?> -->
     
         <!-- Pengaduan -->
 

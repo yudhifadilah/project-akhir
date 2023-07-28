@@ -1,40 +1,42 @@
 <?php
-namespace App\Controllers\Admin;
+namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\OrganizationModel;
+use App\Models\KeuanganRWModel;
 
-class OrganizationController extends BaseController
+class KeuanganRWController extends BaseController
 {
     public function index()
     {
-        $model = new OrganizationModel();
+        $keuanganRWModel = new KeuanganRWModel();
         $data = [
             'user' => $this->user, // Assuming $this->user contains the user data
-            'title' => 'Semua Struktur Organisasi',
-            'organizations' => $model->findAll(), // Fetching the organizations data from the model
+            'title' => 'Rekapitulasi Kas RW Cilame',
+            'keuangan_rw' => $keuanganRWModel->findAll(), // Fetching the organizations data from the model
         ];
     
-        return view('/admin/organization/list_organization', $data);
+
+
+        return view('keuangan_rw/index', $data);
     }
 
     public function create()
     {
-        $model = new OrganizationModel();
+        $keuanganRWModel = new KeuanganRWModel();
         $data = [
             'user' => $this->user,
-            'title' => 'Create Struktur Organisasi',
+            'title' => 'Input Keuangan Rukun Warga',
         ];
 
-        return view('/admin/organization/create', $data);
+        return view('/keuangan_rw/create', $data);
     }
-    
+
     public function store()
     {
-        $model = new OrganizationModel();
+        $keuanganRWModel = new KeuanganRWModel();
 
         // Ambil file gambar dari form upload
-        $imageFile = $this->request->getFile('image');
+       // $imageFile = $this->request->getFile('image');
 
         // Cek apakah ada gambar yang diupload
         if ($imageFile->isValid() && !$imageFile->hasMoved()) {
@@ -48,7 +50,7 @@ class OrganizationController extends BaseController
             $data = [
                 'name' => $this->request->getPost('name'),
                 'jabatan' => $this->request->getPost('jabatan'),
-                'image_filename' => $imageName // Simpan nama file gambar ke database
+                //'image_filename' => $imageName // Simpan nama file gambar ke database
             ];
 
             // Simpan data organization ke database
@@ -62,15 +64,15 @@ class OrganizationController extends BaseController
         }
     }
 
-    public function dt_organizations()
+    public function dt_keuangan()
     {
         if ($this->request->getMethod()) {
             if ($this->request->isAJAX()) {
-                $model = new OrganizationModel();
+                $keuanganRWModel = new KeuanganRWModel();
                 $searchValue = $this->request->getPost("search")['value'];
 
                 // Get filtered organization based on search input, excluding soft-deleted organization
-                $lists = $model->getArticles($searchValue, false);
+                $lists = $keuanganRWModel->getArticles($searchValue, false);
 
                 $data = [];
                 $no = $this->request->getPost("start");
@@ -81,10 +83,9 @@ class OrganizationController extends BaseController
                     $row = [];
 
                     $row['id'] = $list['id'];
-                    $row['name'] = $list['name'];
-                    $row['jabatan'] = $list['jabatan'];
-                    $row['image_filename'] = $list['image_filename'];
-                    $row['created_at'] = $list['created_at'];
+                    $row['tanggal'] = $list['tanggal'];
+                    $row['deskripsi'] = $list['deskripsi'];
+                    $row['jumlah'] = $list['jumlah'];
 
                     $data[] = $row;
                 }
@@ -103,99 +104,76 @@ class OrganizationController extends BaseController
 
     public function update($id)
     {
-        $model = new OrganizationModel();
+        $keuanganRWModel = new KeuanganRWModel();
 
         // Ambil data organization yang akan diupdate
-        $organization = $model->find($id);
+        $keuangan_rw = $keuanganRWModel->find($id);
 
-        if (!$organization) {
-            return redirect()->to('/admin/organization')->with('msg', 'Organisasi not found.');
+        if (!$keuangan_rw) {
+            return redirect()->to('/keuangan_rw')->with('msg', 'Organisasi not found.');
         }
 
         $data = [
-            'name' => $this->request->getPost('name'),
-            'jabatan' => $this->request->getPost('jabatan'),
+            'tanggal' => $this->request->getPost('tanggal'),
+            'deskripsi' => $this->request->getPost('deskripsi'),
+            'jumlah' => $this->request->getPost('jumlah'),
         ];
 
         // Cek apakah ada file gambar yang diunggah
         $image = $this->request->getFile('image_filename');
 
-        if ($image !== null) {
-            if ($image->isValid() && !$image->hasMoved()) {
-                // Tentukan direktori tujuan untuk menyimpan gambar
-                $uploadPath = 'assets/img/postingan';
-
-                // Hapus gambar lama jika ada
-                if ($organization['image_filename'] !== null && file_exists($uploadPath . '/' . $organization['image_filename'])) {
-                    unlink($uploadPath . '/' . $organization['image_filename']);
-                }
-
-                // Generate nama unik untuk file gambar
-                $newName = $image->getRandomName();
-
-                // Pindahkan gambar ke direktori yang ditentukan
-                $image->move($uploadPath, $newName);
-
-                // Simpan nama file gambar baru ke dalam data yang akan diupdate
-                $data['image_filename'] = $newName;
-            } else {
-                // Jika file gambar tidak valid, Anda dapat menangani kesalahan di sini
-                return redirect()->back()->withInput()->with('error', 'File gambar tidak valid.');
-            }
-        }
-
         // Validasi data jika diperlukan
 
         // Update data di database
-        $model->update($id, $data);
+        $keuanganRWModel->update($id, $data);
 
         // Redirect ke halaman daftar organization setelah berhasil mengupdate artikel
-        return redirect()->to('/admin/organization')->with('success', 'Organisasi berhasil diupdate.');
+        return redirect()->to('/keuangan_rw')->with('success', 'Organisasi berhasil diupdate.');
     }
     
 
     public function edit($id)
     {
-        $model = new OrganizationModel();
+        $keuanganRWModel = new KeuanganRWModel();
 
         // Get the specific organization by $id (assuming you want to edit a specific organization)
-        $organization = $model->find($id);
+        $keuangan_rw = $keuanganRWModel->find($id);
 
-        if (!$organization) {
+        if (!$keuangan_rw) {
             // Handle the case where the organization with the given $id is not found
-            return redirect()->to('/admin/organization')->with('msg', 'Article not found.');
+            return redirect()->to('/keuangan_rw')->with('msg', 'Article not found.');
         }
 
         $data = [
             'user' => $this->user,
-            'title' => 'organization',
-            'organization' => $organization, // Pass the specific organization to the view
+            'title' => 'keuangan_rw',
+            'keuangan_rw' => $keuangan_rw, // Pass the specific organization to the view
         ];
 
         // Tampilkan view "organization/edit" dengan data artikel yang ingin di-edit
-        return view('admin/organization/edit', $data);
+        return view('/keuangan_rw/edit', $data);
     }
 
 
 
     public function hard_delete($id)
     {
-        $model = new OrganizationModel();
+        $keuanganRWModel = new KeuanganRWModel();
 
         // Check if the organization with the given ID exists in the database
-        $organization = $model->find($id);
-        if (!$organization) {
+        $keuangan_rw = $keuanganRWModel->find($id);
+        if (!$keuangan_rw) {
             // If the organization is not found, return a 404 response or handle it accordingly
             return $this->response->setStatusCode(404, 'Data tidak ditemukan.');
         }
 
         // Perform the hard delete operation on the organization using the custom method from the model
-        $model->hardDelete($id);
+        $keuanganRWModel->hardDelete($id);
 
         // Set flash message to show "Data berhasil dihapus" (Data has been deleted successfully)
         session()->setFlashdata('msg', 'Data berhasil dihapus.');
 
         // Redirect to the page for listing organization or any other relevant page
-        return redirect()->to('/admin/organization');
+        return redirect()->to('/keuangan_rw');
     }
 }

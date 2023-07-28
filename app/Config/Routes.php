@@ -55,13 +55,21 @@ $routes->group('admin', ['filter' => 'role:1'], function ($routes) {
     $routes->post('articles/update/(:num)', 'Admin\ArticleController::update/$1');
 	$routes->get('articles/soft_delete/(:num)', 'Admin\ArticleController::soft_delete/$1');
 
-	// app/config/Routes.php
+	// organisasi
 	$routes->get('organization', 'Admin\OrganizationController::index');
 	$routes->get('organization/create', 'Admin\OrganizationController::create');
 	$routes->post('organization/store', 'Admin\OrganizationController::store');
 	$routes->get('organization/edit/(:num)', 'Admin\OrganizationController::edit/$1');
 	$routes->post('organization/update/(:num)', 'Admin\OrganizationController::update/$1');
 	$routes->delete('organization/hard_delete', 'Admin\OrganizationController::hard_delete');
+
+	// Route Kas RW
+	$routes->get('keuangan_rw', 'KeuanganRWController::index');
+	$routes->get('keuangan_rw/create', 'KeuanganRWController::create');
+	$routes->post('keuangan_rw/store', 'KeuanganRWController::store');
+	$routes->get('keuangan_rw/edit/(:num)', 'KeuanganRWController::edit/$1');
+	$routes->post('keuangan_rw/update/(:num)', 'KeuanganRWController::update/$1');
+	$routes->delete('keuangan_rw/hard_delete', 'KeuanganRWController::hard_delete');
 
 
 
@@ -89,12 +97,19 @@ $routes->delete('pengajuan/(:num)', 'Pengajuan::soft_delete/$1', ['filter' => 'r
 
 $routes->get('user/ubah-password', 'User::ubah_password');
 
+// user article
 
 $routes->get('articles', 'showPost\showPost::index');
 $routes->get('articles/(:num)', 'showPost\showPost::show/$1');
 
-// app/config/Routes.php
+// user organisasi
 
+$routes->get('organizations', 'ShowStruktur\ShowStruktur::index');
+$routes->get('organizations/(:num)', 'ShowStruktur\ShowStruktur::show/$1');
+
+// app/config/Routes.php
+$routes->get('keuangan_rw', 'KeuanganRWController::index');
+$routes->get('data_warga_rw', 'DataWargaRWController::index');
 
 
 /*

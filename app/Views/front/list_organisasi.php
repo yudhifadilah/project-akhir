@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Sistem Layanan Informasi Desa</title>
+    <title>Sistem Layanan Informasi Rukun Warga Cilame</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -41,7 +41,7 @@
     <section id="topbar" class="d-flex align-items-center">
         <div class="container d-flex justify-content-center justify-content-md-between">
             <div class="contact-info d-flex align-items-center">
-                <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:desaciwaruga@gmail.com">desaciwaruga@gmail.com</a></i>
+                <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:rukunwargacilame@gmail.com">rukunwargacilame@gmail.com</a></i>
                 <i class="bi bi-phone d-flex align-items-center ms-4"><span>+62896-9271-3590</span></i>
             </div>
            <!-- =======  <div class="social-links d-none d-md-flex align-items-center">
@@ -61,8 +61,8 @@
             <nav id="navbar" class="navbar">
                 <ul>
                     <li><a class="nav-link scrollto " href="/">Beranda</a></li>
-                    <li><a class="nav-link scrollto " href="/">Tentang Kami</a></li>
-                    <li><a class="nav-link scrollto active" href="/showPost">Berita Warga</a></li>
+                    <li><a class="nav-link scrollto active" href="/">Tentang Kami</a></li>
+                    <li><a class="nav-link scrollto " href="/showPost">Berita Warga</a></li>
                     <li><a class="nav-link scrollto" href="#contact">Kontak</a></li>
                 </ul>
 
@@ -71,7 +71,8 @@
 
         </div>
     </header>
-    <title>Sistem Layanan Informasi Desa - Artikel</title>
+    <!-- End Header -->
+    <title>Sistem Layanan Informasi Rukun Warga Cilame -  Struktur Organisasi</title>
     <!-- Tambahkan link CSS Bootstrap dan custom CSS di sini -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -98,32 +99,44 @@
         }
 
         .card-title {
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: bold;
-            color: #007bff;
-            margin-bottom: 20px;
         }
 
         .card-text {
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: #555;
-            line-height: 1.8;
         }
 
-        /* Optional: add more styles here */
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
 
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-12">
-                <h1 class="card-title"><?= $article['title']; ?></h1>
-                <img src="<?= base_url('assets/img/postingan/' . $article['image_filename']) ?>" class="img-fluid" alt="Responsive image">
-                <p class="card-text"><?= $article['content']; ?></p>
+  <div class="container mt-5">
+    <h1 class="text-center mb-5">Struktur Organisasi</h1>
+    <div class="row">
+        <?php foreach ($organizations as $organization) : ?>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="<?= base_url('assets/img/postingan/' . $organization['image_filename']) ?>" class="card-img-fluid" alt="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><?= $organization['name']; ?></h5>
+                        <p class="card-text"><?= substr($organization['jabatan'], 0, 100); ?></p>
+                        <!-- Menghapus atribut "href" untuk mematikan akses login -->
+                    </div>
+                </div>
             </div>
-        </div>
+        <?php endforeach; ?>
     </div>
+</div>
+
 
     <!-- Masukkan link script Bootstrap di sini -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -209,4 +222,3 @@
 </body>
 
 </html>
-

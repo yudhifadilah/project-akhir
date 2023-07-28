@@ -18,18 +18,18 @@
                 <!-- Form Edit Organisasi -->
                 <div class="card shadow">
                     <div class="card-body">
-                        <form method="post" action="/admin/organization/update/<?php echo $organization['id']; ?>" enctype="multipart/form-data">
+                        <form method="post" action="/KeuanganRWController/update/<?php echo $keuangan_rw['id']; ?>" enctype="multipart/form-data">
                             <div class="form-group">
-                                <label for="name">Nama Lengkap</label>
-                                <input type="text" name="name" value="<?php echo $organization['name']; ?>" class="form-control" required>
+                                <label for="tanggal">Tanggal</label>
+                                <input type="date" name="tanggal" value="<?php echo $keuangan_rw['tanggal']; ?>" class="form-control" required>
                             </div>
                             <div class="form-group">
-                                <label for="jabatan">Jabatan</label>
-                                <textarea name="jabatan" id="jabatan" class="form-control" rows="8" required><?php echo $organization['jabatan']; ?></textarea>
+                                <label for="deskripsi">Jabatan</label>
+                                <textarea name="deskripsi" id="deskripsi" class="form-control" rows="8" required><?php echo $keuangan_rw['deskripsi']; ?></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="image_filename">Gambar Artikel</label>
-                                <input type="file" name="image_filename" id="image_filename" class="form-control-file">
+                                <label for="jumlah">Jumlah</label>
+                                <input type="number" name="jumlah" id="jumlah" class="form-control-file">
                             </div>
                             <div class="form-group">
                                 <input type="submit" value="Update" class="btn btn-primary">
