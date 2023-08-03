@@ -137,6 +137,31 @@
                 </div>
             </div>
         </li>
+
+
+
+                    <!-- Post Agenda RW -->
+
+                    <li class="nav-item <?= url_is('/TodoController') || url_is('/TodoController/create') || url_is('/TodoController/edit') ? 'active' : '' ?>">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#todo" aria-expanded="true" aria-controls="articles">
+                <?php if (url_is('/TodoController/create')) : ?>
+                    <i class="fas fa-envelope-open"></i>
+                <?php elseif (url_is('/TodoController/edit')) : ?>
+                    <i class="fas fa-spinner"></i>
+                <?php elseif (url_is('/TodoController/create')) : ?>
+                    <i class="fas fa-check-square"></i>
+                <?php else : ?>
+                    <i class="fas fa-list"></i>
+                <?php endif; ?>
+        <span>Agenda RW</span>
+            </a>
+            <div id="todo" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="/TodoController">Agenda  RW</a>
+                    <a class="collapse-item" href="/TodoController/create">Input Agenda</a>
+                </div>
+            </div>
+        </li>
     <?php endif; ?>
     
         <!-- Pengajuan Surat -->

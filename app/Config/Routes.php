@@ -48,6 +48,7 @@ $routes->group('admin', ['filter' => 'role:1'], function ($routes) {
 	$routes->put('manage-user/user_activation', 'Admin\ManageUser::user_activation');
 	$routes->delete('manage-user/hard_delete', 'Admin\ManageUser::hard_delete');
 
+	// Articles
 	$routes->get('articles', 'Admin\ArticleController::index');
     $routes->get('articles/create', 'Admin\ArticleController::create');
     $routes->post('articles/store', 'Admin\ArticleController::store');
@@ -70,6 +71,14 @@ $routes->group('admin', ['filter' => 'role:1'], function ($routes) {
 	$routes->get('keuangan_rw/edit/(:num)', 'KeuanganRWController::edit/$1');
 	$routes->post('keuangan_rw/update/(:num)', 'KeuanganRWController::update/$1');
 	$routes->delete('keuangan_rw/hard_delete', 'KeuanganRWController::hard_delete');
+
+	$routes->get('todo', 'TodoController::index');
+	$routes->get('todo/create', 'TodoController::create');
+	$routes->post('todo/store', 'TodoController::store');
+	$routes->post('todo/update/(:num)', 'TodoController::update/$1');
+	$routes->get('todo/edit/(:num)', 'TodoController::edit/$1');
+	$routes->post('todo/delete/(:num)', 'TodoController::delete/$1');
+
 
 
 

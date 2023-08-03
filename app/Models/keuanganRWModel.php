@@ -28,4 +28,9 @@ class KeuanganRWModel extends Model
 
         return $builder->get()->getResultArray();
     }
+
+    public function hardDelete($id)
+    {
+        return $this->where('id', $id)->delete();
+    }
 }

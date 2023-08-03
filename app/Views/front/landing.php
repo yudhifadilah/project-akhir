@@ -62,7 +62,7 @@
                 <ul>
                     <li><a class="nav-link scrollto active" href="#hero">Beranda</a></li>
                     <li><a class="nav-link scrollto " href="#portfolio">Tentang Kami</a></li>
-                    <li><a class="nav-link scrollto" href="#team">Berita Warga</a></li>
+                    <li><a class="nav-link scrollto" href="#team">Kas RW</a></li>
                     <li><a class="nav-link scrollto" href="#contact">Kontak</a></li>
                 </ul>
 
@@ -76,8 +76,8 @@
     <!-- ======= Hero Section ======= -->
     <section id="hero" class="d-flex align-items-center">
         <div class="container" data-aos="zoom-out" data-aos-delay="100">
-            <h1>Selamat Datang Di <span>Aplikasi Sistem Pelayanan Rukun Warga Cilmae</span></h1>
-            <h2>Rukun Warga Cilame</h2>
+            <h1>Selamat Datang Di <span>Aplikasi Sistem Pelayanan Rukun Warga Cilame</span></h1>
+            <h2>Rukun Warga Cilame Memiliki Sekitar 500 Jiwa</h2>
             <div class="d-flex">
                 <a href="<?php echo base_url('Auth') ?>" class="btn-get-started scrollto">Login</a>
             </div>
@@ -202,7 +202,7 @@
                         <div class="info-box mb-4">
                             <i class="bx bx-map"></i>
                             <h3>Alamat</h3>
-                            <p>Jl. Waruga jaya No.5 Rt.01 Rw.03</p>
+                            <p>Ngamprah, Kabupaten Bandung Barat</p>
                         </div>
                     </div>
 
@@ -210,7 +210,7 @@
                         <div class="info-box  mb-4">
                             <i class="bx bx-envelope"></i>
                             <h3>Email Kami</h3>
-                            <p>desaciwaruga@gmail.com</p>
+                            <p>rukunwargacilame@gmail.com</p>
                         </div>
                     </div>
 
@@ -225,8 +225,7 @@
                 </div>
 
                 <div class="row" data-aos="fade-up" data-aos-delay="100">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31690.400055280144!2d107.56555283955079!3d-6.854598399999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e6a174dd385b%3A0x8d3fd09923c0b007!2sCiwaruga%2C%20Kec.%20Parongpong%2C%20Kabupaten%20Bandung%20Barat%2C%20Jawa%20Barat!5e0!3m2!1sid!2sid!4v1689672586751!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31691.028190846686!2d107.50114034732!3d-6.845144561785449!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e37ebcdecaf7%3A0x8bdc2dd419543f72!2sCilame%2C%20Ngamprah%2C%20West%20Bandung%20Regency%2C%20West%20Java!5e0!3m2!1sen!2sid!4v1691049971645!5m2!1sen!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </section><!-- End Contact Section -->
 
     </main><!-- End #main -->
@@ -250,9 +249,9 @@
                     <div class="col-lg-3 col-md-6 footer-contact">
                         <h3><img src="<?php echo base_url() ?>/assets/img/portfolio/lg.svg" width="100px" height="100px"><span></span></h3>
                         <p>
-                        Jl. Waruga jaya, Kabupaten Bandung Barat
+                        Jl. Ngamprah, Kabupaten Bandung Barat
                             <strong>Telefon:</strong> (022) 82004212<br>
-                            <strong>Email:</strong> desaciwaruga@gmail.com<br>
+                            <strong>Email:</strong> rukunwargacilame@gmail.com<br>
                         </p>
                     </div>
 

@@ -36,7 +36,7 @@
                                             <td><?= $keuangan['jumlah']; ?></td>
                                                 <td>
                                                     <a href="<?= base_url('/KeuanganRWController/edit/' . $keuangan['id']); ?>" class="btn btn-sm btn-primary">Edit</a>
-                                                    <a href="<?= base_url('/KeuanganRWController/hard_delete/' . $keuangan['id']); ?>" class="btn btn-sm btn-danger hapus-article" data-toggle="modal" data-target="#modal-hapus" data-organizationid="<?= $keuangan['id']; ?>">Hapus</a>
+                                                    <a href="#" class="btn btn-sm btn-danger hapus-article" data-toggle="modal" data-target="#modal-hapus" data-keuanganid="<?= $keuangan['id']; ?>">Hapus</a>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
@@ -44,31 +44,30 @@
                                 </table>
                             </div>
 
-                             <!-- Modal Hapus Artikel -->
-                             <div class="modal fade" id="modal-hapus" tabindex="-1" role="dialog" aria-labelledby="modal-hapusLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <form action="<?= base_url('/KeuanganRWController/hard_delete') ?>" method="post" id="formHapusArtikel">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modal-hapusLabel">Yakin ingin menghapus Keuangan ini?</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <span class="text-gray-900">Klik "Yakin" untuk konfirmasi menghapus Keuangan ini.</span>
-                            <?= csrf_field(); ?>
-                            <input type="hidden" name="_method" value="DELETE">
-                            <input type="hidden" name="id" id="organisasi_id">
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary btn-yakin">Yakin</button>
-                        </div>
-                    </form>
+                            <div class="modal fade" id="modal-hapus" tabindex="-1" role="dialog" aria-labelledby="modal-hapusLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="<?= base_url('/KeuanganRWController/hard_delete') ?>" method="post" id="formHapusArtikel">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-hapusLabel">Yakin ingin menghapus Keuangan ini?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
                 </div>
-            </div>
+                <div class="modal-body">
+                    <span class="text-gray-900">Klik "Yakin" untuk konfirmasi menghapus Keuangan ini.</span>
+                    <?= csrf_field(); ?>
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="id" id="keuangan_id">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-yakin">Yakin</button>
+                </div>
+            </form>
         </div>
+    </div>
+</div>
                         </div>
                     </div>
                 </div>
@@ -80,64 +79,19 @@
 <?= $this->endSection(); ?>
 
 <?= $this->section('additional-js'); ?>
-<script>
+   <script>
     $(document).ready(function () {
         var table;
 
         function tbl_keuangan() {
             table = $("#tbl-keuangan").DataTable({
-                "lengthMenu": [
-                    [5, 10, 25, 50, -1],
-                    [5, 10, 25, 50, "All"]
-                ],
-                "processing": true,
-                "serverSide": true,
-                "order": [],
-                "ajax": {
-                    "url": '<?= base_url('/KeuanganRWController/dt_keuangan') ?>',
-                    "type": "post",
-                    "dataSrc": function (data) {
-                        // Map the data to the required format for DataTables
-                        return data.data;
-                    }
-                },
-                "columns": [
-                    {"data": "tanggal"},
-                    {"data": "deskripsi"},
-                    {"data": "jumlah"},
-                    {
-                        "data": "id",
-                        "render": function (data, type, row, meta) {
-                            return '<a href="/KeuanganRWController/edit/' + data + '" class="btn btn-sm btn-primary">Edit</a>' +
-                                '<button type="button" data-toggle="modal" data-target="#modal-hapus" data-organizationid="' + data + '" class="btn btn-sm btn-danger hapus-article">Hapus</button>';
-                        }
-                    }
-                ],
-                "language": {
-                    "processing": "Loading data..",
-                    "infoEmpty": "0 entri",
-                    "info": "<span class='text-gray-900'>Menampilkan _TOTAL_ data artikel.</span>",
-                    "infoFiltered": "(difilter dari _MAX_ total entri)",
-                    "emptyTable": "Belum ada data",
-                    "lengthMenu": "Menampilkan _MENU_ entri",
-                    "search": "Pencarian:",
-                    "zeroRecords": "Data tidak ditemukan",
-                    "paginate": {
-                        "first": "Awal",
-                        "last": "Akhir",
-                        "next": "Selanjutnya",
-                        "previous": "Sebelumnya"
-                    },
-                    "paging": true,
-                    "lengthChange": true,
-                    "pageLength": 5,
-                }
+                // DataTables configuration...
             });
         }
 
         tbl_keuangan();
 
-        // Pesan berhasil di verifikasi (approved)
+        // Toast notification for successful deletion
         var msg = $("#flash-msg").data('flash');
         if (msg) {
             $.toast({
@@ -147,24 +101,24 @@
             });
         }
 
-        // Menampilkan modal delete
-        $('#tbl_keuangan').off('click', '.hapus-article').on('click', '.hapus-article', function () {
-            var organizationid = $(this).data('organizationid');
-            $(".modal-body #organisasi_id").val(organizationid);
+        // Show modal delete and set the organization ID
+        $('#tbl-keuangan').off('click', '.hapus-article').on('click', '.hapus-article', function () {
+            var keuanganId = $(this).data('keuanganid');
+            $(".modal-body #keuangan_id").val(keuanganId);
         });
 
-        // Submit form delete menggunakan AJAX
+        // Submit form delete using AJAX
         $('#formHapusArtikel').submit(function (e) {
             e.preventDefault();
 
-            var organizationid = $("#organisasi_id").val();
+            var keuanganId = $("#keuangan_id").val();
 
             $.ajax({
-                url: $(this).attr('action') + '/' + organizationid,
+                url: $(this).attr('action') + '/' + keuanganId,
                 method: 'post',
                 dataType: 'json',
                 data: {
-                    id: organizationid,
+                    id: keuanganId,
                     _method: 'DELETE',
                     "<?= csrf_token() ?>": "<?= csrf_hash() ?>"
                 },
@@ -180,19 +134,19 @@
 
                     if (res.success) {
                         $("#modal-hapus").modal('toggle');
-                        table.ajax.reload(null, true); // Refresh the data table after successful deletion
-                        $('.btn-yakin').html('Yakin'); // Reset the button text
+                        table.ajax.reload(null, false);
+                        $('.btn-yakin').html('Yakin');
                     } else {
-                        console.log(res.msg); // Log any error messages
-                        $('.btn-yakin').html('Yakin'); // Reset the button text
+                        console.log(res.msg);
+                        $('.btn-yakin').html('Yakin');
                     }
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     console.log(xhr.responseText);
-                    $('.btn-yakin').html('Yakin'); // Reset the button text
+                    $('.btn-yakin').html('Yakin');
                 },
                 complete: function () {
-                     window.location.reload(); // Remove this line, as reloading the page is not necessary here
+                    window.location.reload(); // Remove this line, as reloading the page is not necessary here
                 }
             });
         });

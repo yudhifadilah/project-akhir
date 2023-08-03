@@ -14,9 +14,6 @@ class KeuanganRWController extends BaseController
             'title' => 'Rekapitulasi Kas RW Cilame',
             'keuangan_rw' => $keuanganRWModel->findAll(), // Fetching the organizations data from the model
         ];
-    
-
-
         return view('keuangan_rw/index', $data);
     }
 
@@ -35,34 +32,21 @@ class KeuanganRWController extends BaseController
     {
         $keuanganRWModel = new KeuanganRWModel();
 
-        // Ambil file gambar dari form upload
-       // $imageFile = $this->request->getFile('image');
+        // Data organization untuk disimpan ke database
+        $data = [
+            'tanggal' => $this->request->getPost('tanggal'),
+            'deskripsi' => $this->request->getPost('deskripsi'),
+            'jumlah' => $this->request->getPost('jumlah'),
+        ];
 
-        // Cek apakah ada gambar yang diupload
-        if ($imageFile->isValid() && !$imageFile->hasMoved()) {
-            // Generate nama unik untuk gambar dengan extensionnya
-            $imageName = $imageFile->getRandomName();
+        // Simpan data organization ke database
+        $keuanganRWModel->insert($data);
 
-            // Pindahkan gambar yang diupload ke folder /img/postingan
-            $imageFile->move('assets/img/postingan', $imageName);
-
-            // Data organization untuk disimpan ke database
-            $data = [
-                'name' => $this->request->getPost('name'),
-                'jabatan' => $this->request->getPost('jabatan'),
-                //'image_filename' => $imageName // Simpan nama file gambar ke database
-            ];
-
-            // Simpan data organization ke database
-            $model->insert($data);
-
-            // Redirect ke halaman daftar organization
-            return redirect()->to('/admin/organization');
-        } else {
-            // Jika gambar gagal diupload, tampilkan pesan error atau lakukan tindakan sesuai kebutuhan
-            return redirect()->back()->withInput()->with('error', 'Gagal mengupload gambar.');
-        }
+        // Redirect ke halaman daftar organization
+        return redirect()->to('/keuangan_rw');
     }
+        
+    
 
     public function dt_keuangan()
     {
@@ -159,21 +143,21 @@ class KeuanganRWController extends BaseController
     public function hard_delete($id)
     {
         $keuanganRWModel = new KeuanganRWModel();
-
-        // Check if the organization with the given ID exists in the database
+    
+        // Check if the financial record with the given ID exists in the database
         $keuangan_rw = $keuanganRWModel->find($id);
         if (!$keuangan_rw) {
-            // If the organization is not found, return a 404 response or handle it accordingly
+            // If the financial record is not found, return a 404 response or handle it accordingly
             return $this->response->setStatusCode(404, 'Data tidak ditemukan.');
         }
-
-        // Perform the hard delete operation on the organization using the custom method from the model
+    
+        // Perform the hard delete operation on the financial record
         $keuanganRWModel->hardDelete($id);
-
+    
         // Set flash message to show "Data berhasil dihapus" (Data has been deleted successfully)
         session()->setFlashdata('msg', 'Data berhasil dihapus.');
-
-        // Redirect to the page for listing organization or any other relevant page
-        return redirect()->to('/keuangan_rw');
+    
+        // Redirect back to the listing page after successful deletion
+        return redirect()->to('/KeuanganRWController/index');
     }
 }
