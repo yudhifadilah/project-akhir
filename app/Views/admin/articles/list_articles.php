@@ -11,8 +11,6 @@
 
         <div class="row">
             <div class="col-12">
-
-                <!-- Page Heading -->
                 <h1 class="h3 mb-4 text-gray-900"><?= $title; ?></h1>
 
                 <div class="card shadow">
@@ -30,12 +28,47 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php
+                                    function bubbleSort($array)
+                                    {
+                                        $n = count($array);
+                                        for ($i = 0; $i < $n - 1; $i++) {
+                                            for ($j = 0; $j < $n - $i - 1; $j++) {
+                                                if (strcmp($array[$j]['title'], $array[$j + 1]['title']) > 0) {
+                                                    $temp = $array[$j];
+                                                    $array[$j] = $array[$j + 1];
+                                                    $array[$j + 1] = $temp;
+                                                }
+                                            }
+                                        }
+                                        return $array;
+                                    }
+
+                                    $sortedArticles = bubbleSort($articles); // Sort articles using Bubble Sort
+                                    $articleCount = count($sortedArticles);
+                                    for ($i = 0; $i < $articleCount; $i++) :
+                                    ?>
+                                        <tr>
+                                            <td><?= $i + 1 ?></td>
+                                            <td><?= $sortedArticles[$i]['title'] ?></td>
+                                            <td><?= $sortedArticles[$i]['content'] ?></td>
+                                            <td>
+                                                <?php if ($sortedArticles[$i]['image_filename']) : ?>
+                                                    <img src="/assets/img/postingan/<?= $sortedArticles[$i]['image_filename'] ?>" alt="Gambar Artikel" width="100">
+                                                <?php endif; ?>
+                                            </td>
+                                            <td><?= $sortedArticles[$i]['created_at'] ?></td>
+                                            <td>
+                                                <a href="/admin/articles/edit/<?= $sortedArticles[$i]['id'] ?>" class="btn btn-sm btn-primary">Edit</a>
+                                                <button type="button" data-toggle="modal" data-target="#modal-hapus" data-articleid="<?= $sortedArticles[$i]['id'] ?>" class="btn btn-sm btn-danger hapus-article">Hapus</button>
+                                            </td>
+                                        </tr>
+                                    <?php endfor; ?>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
 
@@ -83,12 +116,10 @@
                 ],
                 "processing": true,
                 "serverSide": true,
-                "order": [],
                 "ajax": {
                     "url": '<?= base_url('/admin/ArticleController/dt_articles') ?>',
                     "type": "post",
                     "dataSrc": function (data) {
-                        // Map the data to the required format for DataTables
                         return data.data;
                     }
                 },
@@ -133,6 +164,37 @@
                     "paging": true,
                     "lengthChange": true,
                     "pageLength": 5,
+                }
+            });
+        }
+
+        function bubbleSort(arr) {
+                var len = arr.length;
+                for (var i = 0; i < len - 1; i++) {
+                    for (var j = 0; j < len - 1 - i; j++) {
+                        if (arr[j].title.localeCompare(arr[j + 1].title) > 0) {
+                            var temp = arr[j];
+                            arr[j] = arr[j + 1];
+                            arr[j + 1] = temp;
+                        }
+                    }
+                }
+                return arr;
+            }
+
+            // Fetch data from the server and apply Bubble Sort before initializing the DataTable
+            $.ajax({
+                url: '<?= base_url('/admin/ArticleController/dt_articles') ?>',
+                type: 'POST',
+                dataType: 'json',
+                success: function (data) {
+                    var sortedData = bubbleSort(data.data); // Sort the data using Bubble Sort
+
+                    // Initialize DataTable with the sorted data
+                    table = $("#tbl-articles").DataTable({
+                        // ... (your DataTable initialization options)
+                        "data": sortedData, // Set sorted data as initial data for the DataTable
+                    });
                 }
             });
         }

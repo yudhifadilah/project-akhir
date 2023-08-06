@@ -160,7 +160,14 @@
 <!-- Assuming you have a container to wrap the grid -->
 <div class="container">
     <div class="row">
-        <?php foreach ($articles as $article) : ?>
+        <?php
+        // Mengurutkan artikel berdasarkan judul secara abjad
+        $sortedArticles = $articles;
+        usort($sortedArticles, function ($a, $b) {
+            return strcmp($a['title'], $b['title']);
+        });
+
+        foreach ($sortedArticles as $article) : ?>
             <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
                 <div class="member">
                     <div class="member-img">
@@ -184,6 +191,7 @@
         <?php endforeach; ?>
     </div>
 </div>
+
 
 
         </section><!-- End Team Section -->
@@ -260,7 +268,7 @@
                         <ul>
                             <li><i class="bx bx-chevron-right"></i> <a href="#hero">Beranda</a></li>
                             <li><i class="bx bx-chevron-right"></i> <a href="#portfolio">Tentang Kami</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#team">Berita Warga</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#team">Kas RW</a></li>
                             <li><i class="bx bx-chevron-right"></i> <a href="#contact">Kontak</a></li>
                         </ul>
                     </div>

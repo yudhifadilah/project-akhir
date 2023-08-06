@@ -46,6 +46,25 @@
     </div>
 
     <?php if (session()->get('user_level') == 1 or (session()->get('user_level') == 2)) : ?>
+
+        <li class="nav-item <?= url_is('/WargaController/index') || url_is('/WargaController/create') ? 'active' : '' ?>">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#dtwarga" aria-expanded="true" aria-controls="dtwarga">
+                <?php if (url_is('/warga/create')) : ?>
+                    <i class="fas fa-envelope-open"></i>
+                <?php else : ?>
+                    <i class="fas fa-list"></i>
+                <?php endif; ?>
+                <span>Data Warga</span>
+            </a>
+            <div id="dtwarga" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="/WargaController/index">Semua Warga</a>
+                    <a class="collapse-item" href="/WargaController/create">Tambah Data Warga</a>
+                </div>
+            </div>
+        </li>
+                <!-- Pengaduan -->
+
         <li class="nav-item <?= url_is('/admin/pengaduan') || url_is('/admin/pengaduan/masuk') || url_is('/admin/pengaduan/di-proses') || url_is('/admin/pengaduan/selesai') ? 'active' : '' ?>">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pengaduan" aria-expanded="true" aria-controls="pengaduan">
                 <?php if (url_is('/admin/pengaduan/masuk')) : ?>

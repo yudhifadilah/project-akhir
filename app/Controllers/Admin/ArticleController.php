@@ -10,10 +10,17 @@ class ArticleController extends BaseController
     public function index()
     {
         $model = new ArticleModel();
+        $articles = $model->findAll(); // Get all articles from the model
+
         //$data['articles'] = $model->findAll();
+
+            // Sort the articles using Bubble Sort
+    $sortedArticles = $this->bubbleSort($articles);
         $data = [
             'user' => $this->user,
             'title' => 'Semua Berita',
+            'articles' => $sortedArticles, // Pass the sorted articles to the view
+
         ];
 
         // Tampilkan view "list_articles" dengan data artikel
@@ -72,38 +79,41 @@ class ArticleController extends BaseController
             if ($this->request->isAJAX()) {
                 $model = new ArticleModel();
                 $searchValue = $this->request->getPost("search")['value'];
-
+                
+                // Get sorting information from DataTables request
+    
                 // Get filtered articles based on search input, excluding soft-deleted articles
-                $lists = $model->getArticles($searchValue, false);
-
+                $lists = $model->getArticles($searchValue, false, $orderColumnIndex, $orderDir);
+    
                 $data = [];
                 $no = $this->request->getPost("start");
-
+    
                 foreach ($lists as $list) {
                     $no++;
-
+    
                     $row = [];
-
+    
                     $row['id'] = $list['id'];
                     $row['title'] = $list['title'];
                     $row['content'] = $list['content'];
                     $row['image_filename'] = $list['image_filename'];
                     $row['created_at'] = $list['created_at'];
-
+    
                     $data[] = $row;
                 }
-
+    
                 $output = [
                     "draw" => $this->request->getPost("draw"),
                     "recordsTotal" => count($lists),
                     "recordsFiltered" => count($lists),
                     "data" => $data
                 ];
-
+    
                 echo json_encode($output);
             }
         }
     }
+    
 
 
 
@@ -171,6 +181,21 @@ class ArticleController extends BaseController
     
         // Redirect to the page for listing articles or any other relevant page
         return redirect()->to('/admin/articles');
+    }
+
+    private function bubbleSort($array)
+    {
+        $n = count($array);
+        for ($i = 0; $i < $n - 1; $i++) {
+            for ($j = 0; $j < $n - $i - 1; $j++) {
+                if (strcmp($array[$j]['title'], $array[$j + 1]['title']) > 0) {
+                    $temp = $array[$j];
+                    $array[$j] = $array[$j + 1];
+                    $array[$j + 1] = $temp;
+                }
+            }
+        }
+        return $array;
     }
     
 
