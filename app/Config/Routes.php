@@ -48,46 +48,12 @@ $routes->group('admin', ['filter' => 'role:1'], function ($routes) {
 	$routes->put('manage-user/user_activation', 'Admin\ManageUser::user_activation');
 	$routes->delete('manage-user/hard_delete', 'Admin\ManageUser::hard_delete');
 
-	// Articles
 	$routes->get('articles', 'Admin\ArticleController::index');
     $routes->get('articles/create', 'Admin\ArticleController::create');
     $routes->post('articles/store', 'Admin\ArticleController::store');
     $routes->get('articles/edit/(:num)', 'Admin\ArticleController::edit/$1');
     $routes->post('articles/update/(:num)', 'Admin\ArticleController::update/$1');
 	$routes->get('articles/soft_delete/(:num)', 'Admin\ArticleController::soft_delete/$1');
-
-	// organisasi
-	$routes->get('organization', 'Admin\OrganizationController::index');
-	$routes->get('organization/create', 'Admin\OrganizationController::create');
-	$routes->post('organization/store', 'Admin\OrganizationController::store');
-	$routes->get('organization/edit/(:num)', 'Admin\OrganizationController::edit/$1');
-	$routes->post('organization/update/(:num)', 'Admin\OrganizationController::update/$1');
-	$routes->delete('organization/hard_delete', 'Admin\OrganizationController::hard_delete');
-
-	// Route Kas RW
-	$routes->get('keuangan_rw', 'KeuanganRWController::index');
-	$routes->get('keuangan_rw/create', 'KeuanganRWController::create');
-	$routes->post('keuangan_rw/store', 'KeuanganRWController::store');
-	$routes->get('keuangan_rw/edit/(:num)', 'KeuanganRWController::edit/$1');
-	$routes->post('keuangan_rw/update/(:num)', 'KeuanganRWController::update/$1');
-	$routes->delete('keuangan_rw/hard_delete', 'KeuanganRWController::hard_delete');
-
-	// Route Todos
-	$routes->get('todo', 'TodoController::index');
-	$routes->get('todo/create', 'TodoController::create');
-	$routes->post('todo/store', 'TodoController::store');
-	$routes->post('todo/update/(:num)', 'TodoController::update/$1');
-	$routes->get('todo/edit/(:num)', 'TodoController::edit/$1');
-	$routes->post('todo/delete/(:num)', 'TodoController::delete/$1');
-
-	// Route Data Warga
-	$routes->get('warga', 'WargaController::index');
-	$routes->get('warga/create', 'WargaController::create');
-	$routes->post('warga/store', 'WargaController::store');
-	$routes->get('warga/edit/(:num)', 'WargaController::edit/$1');
-	$routes->post('warga/update/(:num)', 'WargaController::update/$1');
-	$routes->post('warga/delete/(:num)', 'WargaController::delete/$1');
-
 
 });
 
@@ -113,20 +79,9 @@ $routes->delete('pengajuan/(:num)', 'Pengajuan::soft_delete/$1', ['filter' => 'r
 
 $routes->get('user/ubah-password', 'User::ubah_password');
 
-// user article
 
 $routes->get('articles', 'showPost\showPost::index');
 $routes->get('articles/(:num)', 'showPost\showPost::show/$1');
-
-// user organisasi
-
-$routes->get('organizations', 'ShowStruktur\ShowStruktur::index');
-$routes->get('organizations/(:num)', 'ShowStruktur\ShowStruktur::show/$1');
-
-// app/config/Routes.php
-$routes->get('keuangan_rw', 'KeuanganRWController::index');
-$routes->get('data_warga_rw', 'DataWargaRWController::index');
-
 
 /*
  * --------------------------------------------------------------------

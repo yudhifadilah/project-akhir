@@ -62,7 +62,7 @@
                 <ul>
                     <li><a class="nav-link scrollto " href="/">Beranda</a></li>
                     <li><a class="nav-link scrollto " href="/">Tentang Kami</a></li>
-                    <li><a class="nav-link scrollto active" href="/">Berita Warga</a></li>
+                    <li><a class="nav-link scrollto active" href="/showPost">Berita Warga</a></li>
                     <li><a class="nav-link scrollto" href="#contact">Kontak</a></li>
                 </ul>
 
@@ -110,35 +110,20 @@
             line-height: 1.8;
         }
 
-        .center-image {
-            display: flex;
-            justify-content: center;
-        }
-
-        .center-text {
-            text-align: center;
-        }
-
-        .article-content {
-            text-align: justify;
-        }
-
         /* Optional: add more styles here */
 
     </style>
 </head>
 <body>
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-12">
-            <h1 class="card-title center-text"><?= $article['title']; ?></h1>
-            <div class="center-image">
-                <img src="<?= base_url('assets/img/postingan/' . $article['image_filename']) ?>" class="img-fluid" alt="Gambar Artikel">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="card-title"><?= $article['title']; ?></h1>
+                <img src="<?= base_url('assets/img/postingan/' . $article['image_filename']) ?>" class="card-img-top" alt="card">
+                <p class="card-text"><?= $article['content']; ?></p>
             </div>
-            <br><p class="card-text article-content"><?= $article['content']; ?></p>
         </div>
     </div>
-</div>
 
     <!-- Masukkan link script Bootstrap di sini -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

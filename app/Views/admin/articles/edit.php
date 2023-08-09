@@ -48,13 +48,20 @@
 
 <?= $this->section('additional-js'); ?>
 
-<script src="path_to_tinymce/tinymce.min.js"></script>
 <script>
     tinymce.init({
         selector: '#content',
-        height: 300,  // Sesuaikan tinggi editor
-        plugins: 'lists link',
-        toolbar: 'bold italic | numlist bullist link',
+        height: 300, // Tinggi editor
+        menubar: false, // Menyembunyikan menubar
+        plugins: [
+            'advlist autolink lists link image charmap print preview anchor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime media table paste code help wordcount'
+        ],
+        toolbar: 'undo redo | formatselect | ' +
+            'bold italic backcolor | alignleft aligncenter ' +
+            'alignright alignjustify | bullist numlist outdent indent | ' +
+            'removeformat | help'
     });
 </script>
 <?= $this->endSection(); ?>

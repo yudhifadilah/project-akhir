@@ -46,25 +46,6 @@
     </div>
 
     <?php if (session()->get('user_level') == 1 or (session()->get('user_level') == 2)) : ?>
-
-        <li class="nav-item <?= url_is('/WargaController/index') || url_is('/WargaController/create') ? 'active' : '' ?>">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#dtwarga" aria-expanded="true" aria-controls="dtwarga">
-                <?php if (url_is('/warga/create')) : ?>
-                    <i class="fas fa-envelope-open"></i>
-                <?php else : ?>
-                    <i class="fas fa-list"></i>
-                <?php endif; ?>
-                <span>Data Warga</span>
-            </a>
-            <div id="dtwarga" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="/WargaController/index">Semua Warga</a>
-                    <a class="collapse-item" href="/WargaController/create">Tambah Data Warga</a>
-                </div>
-            </div>
-        </li>
-                <!-- Pengaduan -->
-
         <li class="nav-item <?= url_is('/admin/pengaduan') || url_is('/admin/pengaduan/masuk') || url_is('/admin/pengaduan/di-proses') || url_is('/admin/pengaduan/selesai') ? 'active' : '' ?>">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pengaduan" aria-expanded="true" aria-controls="pengaduan">
                 <?php if (url_is('/admin/pengaduan/masuk')) : ?>
@@ -87,9 +68,6 @@
                 </div>
             </div>
         </li>
-
-                <!-- Artikel atau Berita -->
-
         <li class="nav-item <?= url_is('/admin/ArticleController') || url_is('/admin/ArticleController/create') || url_is('/admin/ArticleController/edit') ? 'active' : '' ?>">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#articles" aria-expanded="true" aria-controls="articles">
                 <?php if (url_is('/admin/ArticleController/create')) : ?>
@@ -110,83 +88,13 @@
                 </div>
             </div>
         </li>
-
-        <!-- Struktur Organisasi -->
-
-        <li class="nav-item <?= url_is('/admin/OrganizationController') || url_is('/admin/OrganizationController/create') || url_is('/admin/OrganizationController/edit') ? 'active' : '' ?>">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#organization" aria-expanded="true" aria-controls="articles">
-                <?php if (url_is('/admin/OrganizationController/create')) : ?>
-                    <i class="fas fa-envelope-open"></i>
-                <?php elseif (url_is('/admin/OrganizationController/edit')) : ?>
-                    <i class="fas fa-spinner"></i>
-                <?php elseif (url_is('/admin/OrganizationController/create')) : ?>
-                    <i class="fas fa-check-square"></i>
-                <?php else : ?>
-                    <i class="fas fa-list"></i>
-                <?php endif; ?>
-        <span>Struktur Organisasi</span>
-            </a>
-            <div id="organization" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="/admin/organization">Semua Struktur Organisasi</a>
-                    <a class="collapse-item" href="/admin/organization/create">Buat Struktur Organisasi</a>
-                </div>
-            </div>
-        </li>
-
-            <!-- Post Kas RW -->
-
-            <li class="nav-item <?= url_is('/KeuanganRWController') || url_is('/KeuanganRWController/create') || url_is('/KeuanganRWController/edit') ? 'active' : '' ?>">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#keuangan" aria-expanded="true" aria-controls="articles">
-                <?php if (url_is('/KeuanganRWController/create')) : ?>
-                    <i class="fas fa-envelope-open"></i>
-                <?php elseif (url_is('/KeuanganRWController/edit')) : ?>
-                    <i class="fas fa-spinner"></i>
-                <?php elseif (url_is('/KeuanganRWController/create')) : ?>
-                    <i class="fas fa-check-square"></i>
-                <?php else : ?>
-                    <i class="fas fa-list"></i>
-                <?php endif; ?>
-        <span>Kas RW</span>
-            </a>
-            <div id="keuangan" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="/KeuanganRWController">Rekapitulasi Kas RW</a>
-                    <a class="collapse-item" href="/KeuanganRWController/create">Input Kas RW</a>
-                </div>
-            </div>
-        </li>
-
-
-
-                    <!-- Post Agenda RW -->
-
-                    <li class="nav-item <?= url_is('/TodoController') || url_is('/TodoController/create') || url_is('/TodoController/edit') ? 'active' : '' ?>">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#todo" aria-expanded="true" aria-controls="articles">
-                <?php if (url_is('/TodoController/create')) : ?>
-                    <i class="fas fa-envelope-open"></i>
-                <?php elseif (url_is('/TodoController/edit')) : ?>
-                    <i class="fas fa-spinner"></i>
-                <?php elseif (url_is('/TodoController/create')) : ?>
-                    <i class="fas fa-check-square"></i>
-                <?php else : ?>
-                    <i class="fas fa-list"></i>
-                <?php endif; ?>
-        <span>Agenda RW</span>
-            </a>
-            <div id="todo" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="/TodoController">Agenda  RW</a>
-                    <a class="collapse-item" href="/TodoController/create">Input Agenda</a>
-                </div>
-            </div>
-        </li>
     <?php endif; ?>
+
     
         <!-- Pengajuan Surat -->
 
     
-  <!--   <?php if (session()->get('user_level') == 3) : ?>
+    <?php if (session()->get('user_level') == 3) : ?>
         <li class="nav-item <?= url_is('/pengajuan') || url_is('/pengajuan/tambah') ? 'active' : '' ?>">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapsTwo">
                 <?php if (url_is('/pengajuan/tambah')) : ?>
@@ -203,7 +111,7 @@
                 </div>
             </div>
         </li>
-    <?php endif; ?> -->
+    <?php endif; ?>
     
         <!-- Pengaduan -->
 

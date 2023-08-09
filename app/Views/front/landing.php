@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Sistem Layanan Informasi Rukun Warga Cilame</title>
+    <title>Sistem Layanan Informasi Desa</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -41,7 +41,7 @@
     <section id="topbar" class="d-flex align-items-center">
         <div class="container d-flex justify-content-center justify-content-md-between">
             <div class="contact-info d-flex align-items-center">
-                <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:rukunwargacilame@gmail.com">rukunwargacilame@gmail.com</a></i>
+                <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:desaciwaruga@gmail.com">desaciwaruga@gmail.com</a></i>
                 <i class="bi bi-phone d-flex align-items-center ms-4"><span>+62896-9271-3590</span></i>
             </div>
            <!-- =======  <div class="social-links d-none d-md-flex align-items-center">
@@ -62,7 +62,7 @@
                 <ul>
                     <li><a class="nav-link scrollto active" href="#hero">Beranda</a></li>
                     <li><a class="nav-link scrollto " href="#portfolio">Tentang Kami</a></li>
-                    <li><a class="nav-link scrollto" href="#team">Kas RW</a></li>
+                    <li><a class="nav-link scrollto" href="#team">Berita Warga</a></li>
                     <li><a class="nav-link scrollto" href="#contact">Kontak</a></li>
                 </ul>
 
@@ -76,8 +76,8 @@
     <!-- ======= Hero Section ======= -->
     <section id="hero" class="d-flex align-items-center">
         <div class="container" data-aos="zoom-out" data-aos-delay="100">
-            <h1>Selamat Datang Di <span>Aplikasi Sistem Pelayanan Rukun Warga Cilame</span></h1>
-            <h2>Rukun Warga Cilame Memiliki Sekitar 500 Jiwa</h2>
+            <h1>Selamat Datang Di <span>Aplikasi Sistem Pelayanan Desa</span></h1>
+            <h2>Desa Ciwaruga</h2>
             <div class="d-flex">
                 <a href="<?php echo base_url('Auth') ?>" class="btn-get-started scrollto">Login</a>
             </div>
@@ -88,63 +88,27 @@
 
 
 
-    <section id="portfolio" class="portfolio">
+<section id="portfolio" class="portfolio">
     <div class="container" data-aos="fade-up">
 
         <div class="section-title">
             <h2>Tentang Kami</h2>
-            <h3>Struktur <span>Organisasi</span></h3>
-            <p>Struktur utama yang ada dalam tingkatan pemerintahan RW (Rukun Warga)</p>
+            <h3>Visi <span>Misi</span></h3>
+            <p>Memberdayakan peran aktif warga dalam mengambil prakarsa dan langkah-langkah nyata dalam pemecahan masalah di lingkungan RW</p>
         </div>
         <div class="row mb-4">
-            <div class="col-md d-flex justify-content-center">
-                <!-- Menambahkan gaya CSS untuk menghilangkan garis pada tombol -->
-                <a href="/ShowStruktur" target="_blank" class="btn btn-primary" style="text-decoration: none;">
-                    Lihat Selengkapnya
-                </a>
+            <div class="col-md">
+                <div class="card">
+                  <!--  <a href="/showPost" target="_blank">  -->
+                  <!-- <img src="<?php echo base_url() ?>/assets/img/portfolio/portofolio-1.jpg" width="200px" height="200px" class="card-img-top" alt="card">
+                    </a>-->
+                </div>
             </div>
             <!-- Tambahkan elemen <a> dengan atribut "href" ke gambar selanjutnya -->
         </div>
     </div>
 </section>
 
-    <!-- ======= Struktur Section ======= -->
-    <section id="team" class="team section-bg">
-        <div class="container" data-aos="fade-up">
-            <div class="section-title">
-                <h2>Keuangan Rukun Warga Cilame</h2>
-                <h3>Transparansi <span>Keuangan</span></h3>
-            </div>
-
-            <!-- Assuming you have a container to wrap the grid -->
-            <div class="container">
-
-    <!-- Tambahkan tombol toggle untuk menyembunyikan/menampilkan tabel -->
-    <button id="toggleTableBtn" class="btn btn-primary mb-3">Kas RW</button>
-
-    <table id="keuanganTable" class="table table-hover table-blue">
-      <thead>
-        <tr>
-          <th scope="col">Tanggal</th>
-          <th scope="col">Deskripsi</th>
-          <th scope="col">Jumlah</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php foreach ($keuangan_rw as $keuangan) : ?>
-          <tr>
-            <td><?= $keuangan['tanggal']; ?></td>
-            <td><?= $keuangan['deskripsi']; ?></td>
-            <td><?= $keuangan['jumlah']; ?></td>
-            </td>
-          </tr>
-        <?php endforeach; ?>
-      </tbody>
-    </table>
-        </div>
-    </section>
-
-    
 
         <!-- End Portfolio Section -->
 
@@ -160,14 +124,8 @@
 <!-- Assuming you have a container to wrap the grid -->
 <div class="container">
     <div class="row">
-        <?php
-        // Mengurutkan artikel berdasarkan judul secara abjad
-        $sortedArticles = $articles;
-        usort($sortedArticles, function ($a, $b) {
-            return strcmp($a['title'], $b['title']);
-        });
 
-        foreach ($sortedArticles as $article) : ?>
+        <?php foreach ($articles as $article) : ?>
             <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
                 <div class="member">
                     <div class="member-img">
@@ -189,9 +147,9 @@
                 </div>
             </div>
         <?php endforeach; ?>
+
     </div>
 </div>
-
 
 
         </section><!-- End Team Section -->
@@ -210,7 +168,7 @@
                         <div class="info-box mb-4">
                             <i class="bx bx-map"></i>
                             <h3>Alamat</h3>
-                            <p>Ngamprah, Kabupaten Bandung Barat</p>
+                            <p>Jl. Waruga jaya No.5 Rt.01 Rw.03</p>
                         </div>
                     </div>
 
@@ -218,7 +176,7 @@
                         <div class="info-box  mb-4">
                             <i class="bx bx-envelope"></i>
                             <h3>Email Kami</h3>
-                            <p>rukunwargacilame@gmail.com</p>
+                            <p>desaciwaruga@gmail.com</p>
                         </div>
                     </div>
 
@@ -233,7 +191,8 @@
                 </div>
 
                 <div class="row" data-aos="fade-up" data-aos-delay="100">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31691.028190846686!2d107.50114034732!3d-6.845144561785449!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e37ebcdecaf7%3A0x8bdc2dd419543f72!2sCilame%2C%20Ngamprah%2C%20West%20Bandung%20Regency%2C%20West%20Java!5e0!3m2!1sen!2sid!4v1691049971645!5m2!1sen!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31690.400055280144!2d107.56555283955079!3d-6.854598399999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e6a174dd385b%3A0x8d3fd09923c0b007!2sCiwaruga%2C%20Kec.%20Parongpong%2C%20Kabupaten%20Bandung%20Barat%2C%20Jawa%20Barat!5e0!3m2!1sid!2sid!4v1689672586751!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
         </section><!-- End Contact Section -->
 
     </main><!-- End #main -->
@@ -257,9 +216,9 @@
                     <div class="col-lg-3 col-md-6 footer-contact">
                         <h3><img src="<?php echo base_url() ?>/assets/img/portfolio/lg.svg" width="100px" height="100px"><span></span></h3>
                         <p>
-                        Jl. Ngamprah, Kabupaten Bandung Barat
+                        Jl. Waruga jaya, Kabupaten Bandung Barat
                             <strong>Telefon:</strong> (022) 82004212<br>
-                            <strong>Email:</strong> rukunwargacilame@gmail.com<br>
+                            <strong>Email:</strong> desaciwaruga@gmail.com<br>
                         </p>
                     </div>
 
@@ -268,7 +227,7 @@
                         <ul>
                             <li><i class="bx bx-chevron-right"></i> <a href="#hero">Beranda</a></li>
                             <li><i class="bx bx-chevron-right"></i> <a href="#portfolio">Tentang Kami</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#team">Kas RW</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#team">Berita Warga</a></li>
                             <li><i class="bx bx-chevron-right"></i> <a href="#contact">Kontak</a></li>
                         </ul>
                     </div>
@@ -313,15 +272,6 @@
 
     <!-- Template Main JS File -->
     <script src="<?php echo base_url() ?>/assets/js/main.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-  $(document).ready(function () {
-    // Toggle tabel ketika tombol di klik
-    $("#toggleTableBtn").on("click", function () {
-      $("#keuanganTable").toggle();
-    });
-  });
-</script>
 
 </body>
 

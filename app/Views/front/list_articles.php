@@ -119,25 +119,24 @@
     </style>
 </head>
 <body>
-<div class="container mt-5">
-    <h1 class="text-center mb-5">Berita Warga</h1>
-    <div class="row">
-        <?php foreach ($sortedArticles as $article) : ?>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="<?= base_url('assets/img/postingan/' . $article['image_filename']) ?>" class="card-img-top" alt="card">
-                    <div class="card-body">
-                        <h5 class="card-title"><?= $article['title']; ?></h5>
-                        <p class="card-text"><?= substr($article['content'], 0, 100); ?></p>
-                        <!-- Menggunakan base_url() untuk menghindari masalah URL di deployment -->
-                        <a href="<?= base_url('/showPost/show/' . $article['id']); ?>" class="btn btn-primary">Baca Selengkapnya</a>
+    <div class="container mt-5">
+        <h1 class="text-center mb-5">Berita Warga</h1>
+        <div class="row">
+            <?php foreach ($articles as $article) : ?>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="<?= base_url('assets/img/postingan/' . $article['image_filename']) ?>" class="card-img-top" alt="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><?= $article['title']; ?></h5>
+                            <p class="card-text"><?= substr($article['content'], 0, 100); ?></p>
+                            <!-- Menggunakan base_url() untuk menghindari masalah URL di deployment -->
+                            <a href="<?= base_url('/showPost/show/' . $article['id']); ?>" class="btn btn-primary">Baca Selengkapnya</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        <?php endforeach; ?>
+            <?php endforeach; ?>
+        </div>
     </div>
-</div>
-
 
     <!-- Masukkan link script Bootstrap di sini -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
