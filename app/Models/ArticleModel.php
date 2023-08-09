@@ -20,28 +20,29 @@ class ArticleModel extends Model
     protected $dateFormat = 'datetime'; // Format tanggal yang dihasilkan oleh model
 
     // Fungsi untuk mengambil data dari tabel articles
-    public function getArticles($searchValue = null, $includeDeleted = true)
-    {
-        $builder = $this->db->table('articles');
-
-        // Apply search filter if provided
-        if ($searchValue) {
-            $builder->groupStart()
-                ->like('title', $searchValue)
-                ->orLike('content', $searchValue)
-                ->groupEnd();
-        }
-
-        // Exclude soft-deleted articles if $includeDeleted is set to false
-        if (!$includeDeleted) {
-            $builder->where('deleted_at', null);
-        }
-
-        return $builder->get()->getResultArray();
-    }
 
     public function getImagePath($imageName)
     {
         return base_url('/assets/img/postingan/' . $imageName);
+    }
+
+    public function getArticles($searchValue, $excludeDeleted = true, $orderColumnIndex = null, $orderDir = 'asc')
+    {
+        $builder = $this->select('*')
+                        ->like('title', $searchValue)
+                        ->orWhere('content', $searchValue);
+
+        if ($excludeDeleted) {
+            $builder->where('is_deleted', 0); // Assuming you have a field indicating soft deletion
+        }
+
+        if ($orderColumnIndex !== null) {
+            // Example: You can adjust this based on your actual column names
+            $columns = ['title', 'content', 'created_at'];
+            $orderBy = isset($columns[$orderColumnIndex]) ? $columns[$orderColumnIndex] : 'created_at';
+            $builder->orderBy($orderBy, $orderDir);
+        }
+
+        return $builder->findAll();
     }
 }

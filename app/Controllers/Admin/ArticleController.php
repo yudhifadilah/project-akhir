@@ -10,10 +10,17 @@ class ArticleController extends BaseController
     public function index()
     {
         $model = new ArticleModel();
+        $articles = $model->findAll(); // Get all articles from the model
+
         //$data['articles'] = $model->findAll();
+
+            // Sort the articles using Bubble Sort
+    $sortedArticles = $this->bubbleSort($articles);
         $data = [
             'user' => $this->user,
             'title' => 'Semua Berita',
+            'articles' => $sortedArticles, // Pass the sorted articles to the view
+
         ];
 
         // Tampilkan view "list_articles" dengan data artikel
@@ -72,38 +79,41 @@ class ArticleController extends BaseController
             if ($this->request->isAJAX()) {
                 $model = new ArticleModel();
                 $searchValue = $this->request->getPost("search")['value'];
-
+                
+                // Get sorting information from DataTables request
+    
                 // Get filtered articles based on search input, excluding soft-deleted articles
-                $lists = $model->getArticles($searchValue, false);
-
+                $lists = $model->getArticles($searchValue, false, $orderColumnIndex, $orderDir);
+    
                 $data = [];
                 $no = $this->request->getPost("start");
-
+    
                 foreach ($lists as $list) {
                     $no++;
-
+    
                     $row = [];
-
+    
                     $row['id'] = $list['id'];
                     $row['title'] = $list['title'];
                     $row['content'] = $list['content'];
                     $row['image_filename'] = $list['image_filename'];
                     $row['created_at'] = $list['created_at'];
-
+    
                     $data[] = $row;
                 }
-
+    
                 $output = [
                     "draw" => $this->request->getPost("draw"),
                     "recordsTotal" => count($lists),
                     "recordsFiltered" => count($lists),
                     "data" => $data
                 ];
-
+    
                 echo json_encode($output);
             }
         }
     }
+    
 
 
 
@@ -136,45 +146,75 @@ class ArticleController extends BaseController
     public function update($id)
     {
         $model = new ArticleModel();
-
+    
+        // Get the specific article by $id
+        $article = $model->find($id);
+    
+        if (!$article) {
+            // Handle the case where the article with the given $id is not found
+            return redirect()->to('/admin/articles')->with('msg', 'Article not found.');
+        }
+    
+        // Get existing image filename
+        $existingImage = $article['image_filename'];
+    
+        // Ambil file gambar dari form upload
+        $imageFile = $this->request->getFile('image_filename');
+    
+        // Cek apakah ada gambar yang diupload
+        if ($imageFile->isValid() && !$imageFile->hasMoved()) {
+            // Generate nama unik untuk gambar dengan extensionnya
+            $imageName = $imageFile->getRandomName();
+    
+            // Pindahkan gambar yang diupload ke folder /img/postingan
+            $imageFile->move('assets/img/postingan', $imageName);
+    
+            // Hapus gambar lama jika ada
+            if ($existingImage && file_exists('assets/img/postingan/' . $existingImage)) {
+                unlink('assets/img/postingan/' . $existingImage);
+            }
+        } else {
+            $imageName = $existingImage;
+        }
+    
         $data = [
             'title' => $this->request->getPost('title'),
             'content' => $this->request->getPost('content'),
-            // 'image' => $this->request->getFile('image'), // Tidak perlu, karena kita hanya ingin mengedit data, bukan gambar
+            'image_filename' => $imageName,
         ];
-
+    
         // Validasi data jika diperlukan
-
+    
         // Update data di database
         $model->update($id, $data);
-
+    
         // Redirect ke halaman daftar artikel setelah berhasil mengupdate artikel
         return redirect()->to('/admin/articles');
     }
 
-    public function hard_delete($id)
+    public function hardDelete($id)
     {
         $model = new ArticleModel();
-    
-        // Check if the article with the given ID exists in the database
-        $article = $model->find($id);
-        if (!$article) {
-            // If the article is not found, return a 404 response or handle it accordingly
-            return $this->response->setStatusCode(404, 'Artikel tidak ditemukan.');
-        }
-    
-        // Perform the hard delete operation on the article
-        $model->delete($id);
-    
-        // Set flash message to show "Data berhasil dihapus" (Data has been deleted successfully)
+        $model->delete($id); // Perform hard delete using built-in delete method
+        
         session()->setFlashdata('msg', 'Data berhasil dihapus.');
-    
-        // Redirect to the page for listing articles or any other relevant page
+        
         return redirect()->to('/admin/articles');
     }
-    
 
-
+    private function bubbleSort($array)
+    {
+        $n = count($array);
+        for ($i = 0; $i < $n - 1; $i++) {
+            for ($j = 0; $j < $n - $i - 1; $j++) {
+                if (strcmp($array[$j]['title'], $array[$j + 1]['title']) > 0) {
+                    $temp = $array[$j];
+                    $array[$j] = $array[$j + 1];
+                    $array[$j + 1] = $temp;
+                }
+            }
+        }
+        return $array;
+    }
 }
     
-

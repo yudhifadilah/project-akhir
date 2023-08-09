@@ -58,20 +58,14 @@
                                                     <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         Action
                                                     </a>
-
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                                         <a href="/pengaduan/<?= $row['id']; ?>" class="dropdown-item">Detail</a>
-
                                                         <?php if ($row['status_pengaduan'] == 1) : ?>
-
-                                                            <a href="/pengaduan/ubah/<?= $row['id']; ?>" class="dropdown-item">Ubah</a>
-
                                                             <?= form_open('pengaduan/' . $row['id'], ['class' => 'd-inline']); ?>
                                                             <?= csrf_field(); ?>
                                                             <input type="hidden" name="_method" value="DELETE">
                                                             <button onclick="return confirm('yakin?')" type="submit" class="dropdown-item">Delete</button>
                                                             <?= form_close(); ?>
-
                                                         <?php endif; ?>
 
                                                     </div>

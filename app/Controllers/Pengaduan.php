@@ -68,235 +68,66 @@ class Pengaduan extends BaseController
 
     public function tambah_pengaduan()
     {
-        $rules = [
-            'judul_pengaduan' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => 'Perihal pengaduan wajib diisi.'
-                ]
-            ],
-            'isi_pengaduan' => [
-                'rules' => 'required|min_length[30]',
-                'errors' => [
-                    'required' => 'Isi pengaduan wajib diisi.',
-                    'min_length' => 'Minimal 30 karakter.'
-                ]
-            ],
-            'images' => [
-                'rules' => 'uploaded[images.0]|max_size[images,1024]|is_image[images]|mime_in[images,image/jpg,image/jpeg,image/png]',
-                'errors' => [
-                    'uploaded' => 'Satu file wajib ada.',
-                    'max_size' => 'Anda mengupload file yang melebihi ukuran maksimal.',
-                    'is_image' => 'Anda mengupload file yang bukan gambar.',
-                    'mime_in' => 'Anda mengupload file yang bukan gambar.'
-                ]
-            ],
-        ];
+        helper(['form', 'url']);
 
-        if (!$this->validate($rules)) {
-            return redirect()->to('/pengaduan/tambah')->withInput();
-        }
+        // Load models
+        $pengaduanModel = new PengaduanModel();
+        $buktiModel = new BuktiModel();
 
-        // JIKA LOLOS VALIDASI > CHECKING FILE
-        $images = $this->request->getFileMultiple('images');
-        $jumlahFile = count($images); // jumlah file yang di upload
-
-        if ($jumlahFile > 3) { // jika jumlah file melebihi aturan (3)
-            session()->setFlashdata('err-files', '<span class="text-danger">Jumlah file yang anda upload melebihi aturan.</span>');
-            return redirect()->to('/pengaduan/tambah');
-        }
-
-        // checking nama pengadu
-        $namaPengadu = $this->request->getPost('nama_pengadu');
-
-        if ($namaPengadu !== $this->user['nama']) {
-            if ($namaPengadu !== 'anonym') {
-                $namaPengadu = $this->user['nama'];
-            }
-        }
-
-        $this->db->transBegin(); // Begin DB Transaction
-
-        try {
-            $this->pengaduan->save([
-                'user_id' => $this->user['id'],
-                'nama_pengadu' => $namaPengadu,
+        if ($this->request->getMethod() === 'post') {
+            $data = [
                 'judul_pengaduan' => $this->request->getPost('judul_pengaduan'),
                 'isi_pengaduan' => $this->request->getPost('isi_pengaduan'),
-            ]);
+                'nama_pengadu' => $this->request->getPost('nama_pengadu'),
+                'user_id' => $this->request->getPost('user_id'),
+            ];
 
-            foreach ($images as $i => $img) {
-                if ($img->isValid() && !$img->hasMoved()) {
-                    $files[$i] = $img->getRandomName();
+            if ($pengaduanModel->save($data)) {
+                $pengaduanId = $pengaduanModel->insertID();
+
+                $uploadedFiles = $this->request->getFiles();
+                $filePaths = [];
+
+                foreach ($uploadedFiles['images'] as $image) {
+                    if ($image->isValid() && !$image->hasMoved()) {
+                        $fileName = $image->getRandomName();
+                        $image->move(ROOTPATH . 'public/uploads', $fileName);
+                        $filePaths[] = $fileName;
+                    }
                 }
-            }
 
-            $pengaduan_id = $this->pengaduan->insertID(); // last insert id
-            $img_dua = (array_key_exists(1, $files) ? $files[1] : null);
-            $img_tiga = (array_key_exists(2, $files) ? $files[2] : null);
+                $buktiData = [
+                    'pengaduan_id' => $pengaduanId,
+                    'img_satu' => $filePaths[0] ?? null,
+                    'img_dua' => $filePaths[1] ?? null,
+                    'img_tiga' => $filePaths[2] ?? null,
+                ];
 
-            $this->bukti->save([
-                'pengaduan_id' => $pengaduan_id,
-                'img_satu' => $files[0],
-                'img_dua' => $img_dua,
-                'img_tiga' => $img_tiga,
-            ]);
+                $buktiModel->insert($buktiData);
 
-            foreach ($images as $i => $img) {
-                if ($img->isValid() && !$img->hasMoved()) {
-                    $img->move('uploads', $files[$i]);
-                }
-            }
-
-            $this->db->transCommit();
-        } catch (\Exception $e) {
-            $this->db->transRollback();
-
-            // session()->setFlashdata('error-msg', $e->getMessage());
-            session()->setFlashdata('error-msg', 'Terjadi kesalahan, data gagal ditambah.');
-            return redirect()->to('/pengaduan');
-        }
-
-        session()->setFlashdata('msg', 'Pengaduan berhasil ditambah, silahkan menunggu untuk proses approval.');
-        return redirect()->to('/pengaduan');
-    }
-
-    public function ubah($id)
-    {
-        $data = [
-            'user' => $this->user,
-            'title' => 'Ubah Data Pengaduan Saya',
-            'data' => $this->pengaduan->find($id),
-            'bukti' => $this->bukti->getBukti($id),
-            'validation' => $this->validation
-        ];
-
-        // cegah id yang tidak jelas
-        if (empty($data['data'])) {
-            throw new \CodeIgniter\Exceptions\PageNotFoundException('Data tidak ditemukan');
-        } else {
-            // cek jika row_status = 0 | cegah akses form ubah.
-            if ($data['data']['row_status'] == 0) {
-                throw new \CodeIgniter\Exceptions\PageNotFoundException('Data tidak ditemukan');
+                return redirect()->to('/pengaduan')->with('msg', 'Data pengaduan berhasil ditambah.');
             } else {
-                // cek jika pengaduan sudah diproses tidak bisa diubah lagi
-                if ($data['data']['status_pengaduan'] != 1) {
-                    throw new \CodeIgniter\Exceptions\PageNotFoundException('Data tidak ditemukan');
-                }
+                // Handle error if data couldn't be saved
+                return redirect()->to('/pengaduan/tambah')->withInput()->with('error', 'Terjadi kesalahan, data gagal ditambah.');
             }
         }
 
-        return view('user/pengaduan/ubah_pengaduan', $data);
+        // Load the view
+        return view('TambahPengaduan');
     }
-
-    public function ubah_pengaduan()
+    
+    private function bubbleSort($array)
     {
-        $rules = [
-            'judul_pengaduan' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => 'Perihal pengaduan wajib diisi.'
-                ]
-            ],
-            'isi_pengaduan' => [
-                'rules' => 'required|min_length[30]',
-                'errors' => [
-                    'required' => 'Isi pengaduan wajib diisi.',
-                    'min_length' => 'Minimal 30 karakter.'
-                ]
-            ],
-            'images' => [
-                'rules' => 'max_size[images,1024]|is_image[images]|mime_in[images,image/jpg,image/jpeg,image/png]',
-                'errors' => [
-                    'max_size' => 'Anda mengupload file yang melebihi ukuran maksimal.',
-                    'is_image' => 'Anda mengupload file yang bukan gambar.',
-                    'mime_in' => 'Anda mengupload file yang bukan gambar.'
-                ]
-            ],
-        ];
-
-        if (!$this->validate($rules)) {
-            return redirect()->to('/pengaduan/ubah/' . $this->request->getPost('id'))->withInput();
-        }
-
-        $id = $this->request->getPost('id');
-        $namaPengadu = $this->request->getPost('nama_pengadu');
-
-        if ($namaPengadu !== $this->user['nama']) {
-            if ($namaPengadu !== 'anonym') {
-                $namaPengadu = $this->user['nama'];
-            }
-        }
-
-        $images = $this->request->getFileMultiple('images');
-        $jumlahFile = count($images);
-
-        if ($jumlahFile > 3) {
-            session()->setFlashdata('err-files', '<span class="text-danger">Jumlah file yang anda upload melebihi aturan.</span>');
-            return redirect()->to('/pengaduan/ubah/' . $id);
-        }
-
-        $this->db->transBegin(); // Begin DB Transaction
-
-        try {
-            $this->pengaduan->save([
-                'id' => $id,
-                'user_id' => $this->user['id'],
-                'nama_pengadu' => $namaPengadu,
-                'judul_pengaduan' => $this->request->getPost('judul_pengaduan'),
-                'isi_pengaduan' => $this->request->getPost('isi_pengaduan'),
-                'updated_at' => date('Y-m-d H:i:s'),
-            ]);
-
-            // karena upload file tetap mengembalikan string "" (kosong), jadi kita cek apakah file nya ada yg diupload
-            if ($images[0]->getError() !== 4) {
-                foreach ($images as $i => $img) {
-                    if ($img->isValid() && !$img->hasMoved()) {
-                        $files[$i] = $img->getRandomName();
-                    }
-                }
-
-                // get data bukti
-                $bukti = $this->bukti->getBukti($id);
-
-                // hapus file lama
-                unlink('uploads/' . $bukti['img_satu']);
-                if ($bukti['img_dua'] != null) {
-                    unlink('uploads/' . $bukti['img_dua']);
-                }
-                if ($bukti['img_tiga'] != null) {
-                    unlink('uploads/' . $bukti['img_tiga']);
-                }
-
-                // update tbl_bukti
-                $img_dua = (array_key_exists(1, $files) ? $files[1] : null);
-                $img_tiga = (array_key_exists(2, $files) ? $files[2] : null);
-
-                $this->bukti->save([
-                    'id' => $this->request->getPost('bukti_id'),
-                    'img_satu' => $files[0],
-                    'img_dua' => $img_dua,
-                    'img_tiga' => $img_tiga,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                ]);
-
-                // move file baru
-                foreach ($images as $i => $img) {
-                    if ($img->isValid() && !$img->hasMoved()) {
-                        $img->move('uploads', $files[$i]);
-                    }
+        $n = count($array);
+        for ($i = 0; $i < $n - 1; $i++) {
+            for ($j = 0; $j < $n - $i - 1; $j++) {
+                if (strcmp($array[$j]['title'], $array[$j + 1]['title']) > 0) {
+                    $temp = $array[$j];
+                    $array[$j] = $array[$j + 1];
+                    $array[$j + 1] = $temp;
                 }
             }
-
-            $this->db->transCommit(); // Commit
-        } catch (\Exception $e) {
-            $this->db->transRollback(); // Rollback
-
-            session()->setFlashdata('error-msg',  $e->getMessage());
-            return redirect()->to('/pengaduan');
         }
-
-        session()->setFlashdata('msg', 'Pengaduan berhasil diubah.');
-        return redirect()->to('/pengaduan');
+        return $array;
     }
 }

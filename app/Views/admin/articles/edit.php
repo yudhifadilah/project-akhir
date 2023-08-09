@@ -28,8 +28,8 @@
                                 <textarea name="content" id="content" class="form-control" rows="8" required><?php echo $article['content']; ?></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="image">Gambar Artikel</label>
-                                <input type="file" name="image" id="image" class="form-control-file">
+                                <label for="image_filename">Gambar Artikel</label>
+                                <input type="file" name="image_filename" id="image_filename" class="form-control-file">
                             </div>
                             <div class="form-group">
                                 <input type="submit" value="Update" class="btn btn-primary">
@@ -48,20 +48,13 @@
 
 <?= $this->section('additional-js'); ?>
 
+<script src="path_to_tinymce/tinymce.min.js"></script>
 <script>
     tinymce.init({
         selector: '#content',
-        height: 300, // Tinggi editor
-        menubar: false, // Menyembunyikan menubar
-        plugins: [
-            'advlist autolink lists link image charmap print preview anchor',
-            'searchreplace visualblocks code fullscreen',
-            'insertdatetime media table paste code help wordcount'
-        ],
-        toolbar: 'undo redo | formatselect | ' +
-            'bold italic backcolor | alignleft aligncenter ' +
-            'alignright alignjustify | bullist numlist outdent indent | ' +
-            'removeformat | help'
+        height: 300,  // Sesuaikan tinggi editor
+        plugins: 'lists link',
+        toolbar: 'bold italic | numlist bullist link',
     });
 </script>
 <?= $this->endSection(); ?>
